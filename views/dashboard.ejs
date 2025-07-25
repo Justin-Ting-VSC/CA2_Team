@@ -6,31 +6,32 @@
 </head>
 <body>
 
-    <nav style="background-color: #4B2E2E;" class="navbar navbar-expand-lg">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+    <nav style="background-color: #4B2E2E; margin: 0; padding: 0; border-radius: 0; border: none;" class="navbar navbar-expand-lg">
+        <div style="width: 100%; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; background-color: #4B2E2E;">
+            <div class="d-flex align-items-center flex-grow-1">
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; background: transparent;">
                     <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse d-lg-block" id="navbarNav">
                     <ul class="navbar-nav d-flex flex-row">
                         <li class="nav-item">
-                            <a class="nav-link" href="/dashboard" style="color: #F5F5DC; margin-right: 1rem; font-weight: bold;">Home</a>
+                            <a class="nav-link" href="/dashboard" style="color: #F5F5DC; margin-right: 1.5rem; font-weight: bold; text-decoration: none; padding: 0.5rem;">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1rem;">Timetable</a>
+                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Timetable</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1rem;">Study Resources</a>
+                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Study Resources</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1rem;">Subjects</a>
+                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Subjects</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1rem;">Study Groups</a>
+                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Study Groups</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1rem;">Exam Schedules</a>
+                            <a class="nav-link" href="#" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Exam Schedules</a>
                         </li>
                     </ul>
                 </div>
@@ -82,6 +83,7 @@
 
     
     <div class="container">
+        <h1 class="mt-5">Dashboard</h1>
         <p>Welcome, <%= user.username %> (<%= user.role %>)</p>
     </div>
 
