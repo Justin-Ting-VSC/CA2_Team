@@ -1,11 +1,11 @@
 const express = require('express');
 const mysql = require('mysql2');
-const session = require('express-session'); // already correct
+const session = require('express-session'); 
 const flash = require('connect-flash');
 
 const app = express();
 
-// Database connection - updated to your file.io MySQL info
+// Database connection
 const db = mysql.createConnection({
     host: 'dddgt5.h.filess.io',
     user: 'C237StudyBuddy_collegedie',
@@ -54,7 +54,7 @@ const checkAdmin = (req, res, next) => {
     }
 };
 
-// Routes
+// Login - Register - admin dashboard - Index connection
 
 app.get('/', (req, res) => {
     res.render('index', { user: req.session.user, messages: req.flash('success') });
@@ -140,7 +140,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Start server - keep it at 3000 (or change if needed)
+// Start server 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
