@@ -140,6 +140,31 @@ app.get('/logout', (req, res) => {
     });
 });
 
+//hariz subjects
+app.get('/subjects', checkAuthenticated, (req, res) => {
+    res.render('subjects', { user: req.session.user });
+});
+
+//hsuan timetable
+app.get('/timetable', checkAuthenticated, (req, res) => {
+    res.render('timetable', { user: req.session.user });
+});
+
+//shem resources
+app.get('/resources', checkAuthenticated, (req, res) => {
+    res.render('resources', { user: req.session.user });
+});
+
+//justin groups
+app.get('/groups', checkAuthenticated, (req, res) => {
+    res.render('groups', { user: req.session.user });
+});
+
+//dini
+app.get('/exams', checkAuthenticated, (req, res) => {
+    res.render('exams', { user: req.session.user });
+});
+
 // Start server 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
