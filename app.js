@@ -141,8 +141,14 @@ app.get('/logout', (req, res) => {
 });
 
 //hariz subjects
-app.get('/subjects', checkAuthenticated, (req, res) => {
-    res.render('subjects', { user: req.session.user });
+app.get('/subjects', checkAuthenticated, async (req, res) => {
+    db.query('SELECT * FROM subjects', (err, results) => {
+        if (err) throw err;
+        res.render('subjects', {
+            user: req.session.user,
+            subjects: results
+        });
+    });
 });
 
 //hsuan timetable

@@ -149,8 +149,73 @@
                 <h2>Your Subjects</h2>
                 <div class="card">
                     <div class="card-body">
-                        <p>Subjects content will go here...</p>
-                        <!-- Add your subjects list, add subject form, etc. here -->
+                        <!-- Inside <div class="card-body"> -->
+                        <div class="mb-4">
+                            <form class="row g-3" method="GET" action="/subjects/search">
+                                <div class="col-md-4">
+                                    <input type="text" name="name" class="form-control" placeholder="Search by name">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="code" class="form-control" placeholder="Search by code">
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <% if (subjects && subjects.length > 0) { %>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Subject Name</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <% if (user.role === 'admin') { %>
+                                            <th>Actions</th>
+                                        <% } %>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% subjects.forEach(subject => { %>
+                                        <tr>
+                                            <td><%= subject.name %></td>
+                                            <td><%= subject.code %></td>
+                                            <td><%= subject.description %></td>
+                                            <% if (user.role === 'admin') { %>
+                                                <td>
+                                                    <a href="/subjects/edit/<%= subject.id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                                    <form action="/subjects/delete/<%= subject.id %>" method="POST" style="display:inline-block;">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                                    </form>
+                                                </td>
+                                            <% } %>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <p>No subjects found.</p>
+                        <% } %>
+
+                        <% if (user.role === 'admin') { %>
+                            <hr>
+                            <h3>Add New Subject</h3>
+                            <form action="/subjects/add" method="POST">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Subject Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="code" class="form-label">Subject Code</label>
+                                    <input type="text" class="form-control" id="code" name="code" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-outline-secondary">Add Subject</button>
+                            </form>
+                        <% } %>
                     </div>
                 </div>
             </div>
