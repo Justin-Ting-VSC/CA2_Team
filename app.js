@@ -5,7 +5,6 @@ const flash = require('connect-flash');
 
 const app = express();
 
-
 //image 
 const multer = require('multer');
 
@@ -164,6 +163,82 @@ app.get('/subjects', checkAuthenticated, async (req, res) => {
             user: req.session.user,
             subjects: results
         });
+    });
+});
+
+app.get('/subjects/edit/:id', checkAuthenticated, async (req, res) => {
+    const subjectId = req.params.id;
+
+    db.query('SELECT * FROM subjects WHERE id = ?', [subjectId], (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+            return res.status(404).send('Subject not found');
+        }
+
+        res.render('subjects_edit', {
+            user: req.session.user,
+            subject: results[0]
+        });
+    });
+});
+
+app.post('/subjects/edit/:id', checkAuthenticated, (req, res) => {
+    const subjectId = req.params.id;
+    const { name, code, description } = req.body;
+
+    const sql = 'UPDATE subjects SET name = ?, code = ?, description = ? WHERE id = ?';
+    db.query(sql, [name, code, description, subjectId], (err) => {
+        if (err) throw err;
+        res.redirect('/subjects');
+    });
+});
+
+app.post('/subjects/add', checkAuthenticated, (req, res) => {
+    const { name, code, description } = req.body;
+
+    const sql = 'INSERT INTO subjects (name, code, description, created_at) VALUES (?, ?, ?, NOW())';
+
+    db.query(sql, [name, code, description], (err, result) => {
+        if (err) {
+            console.error('Error inserting subject:', err);
+            return res.status(500).send('Error adding subject.');
+        }
+        res.redirect('/subjects');
+    });
+});
+
+app.get('/subjects/search', checkAuthenticated, (req, res) => {
+    const { name = '', code = '' } = req.query;
+
+    const sql = `
+        SELECT * FROM subjects
+        WHERE name LIKE ? AND code LIKE ?
+    `;
+
+    const searchName = `%${name}%`;
+    const searchCode = `%${code}%`;
+
+    db.query(sql, [searchName, searchCode], (err, results) => {
+        if (err) {
+            console.error('Search error:', err);
+            return res.status(500).send('Search failed.');
+        }
+
+        res.render('subjects', {
+            user: req.session.user,
+            subjects: results
+        });
+    });
+});
+
+app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
+    const subjectId = req.params.id;
+
+    const sql = 'DELETE FROM subjects WHERE id = ?';
+    db.query(sql, [subjectId], (err) => {
+        if (err) throw err;
+        res.redirect('/subjects');
     });
 });
 
