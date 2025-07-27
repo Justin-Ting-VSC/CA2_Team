@@ -177,9 +177,110 @@ app.get('/resources', checkAuthenticated, (req, res) => {
     res.render('resources', { user: req.session.user });
 });
 
-//justin study groups
+//justin study groups go to study_groups.ejs
 app.get('/study_groups', checkAuthenticated, (req, res) => {
-    res.render('study_groups', { user: req.session.user });
+
+    //check all data inside study_groups
+    const sql = 'SELECT * FROM study_groups';
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving study_groups');
+        }
+
+        // collect data to insert
+        res.render('study_groups', { user: req.session.user, study_groups: results });
+    });
+});
+
+
+//Justin details
+app.get('/study_groups_details/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM study_groups WHERE id = ?';
+    
+    db.query(sql, [id], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving study_groups by ID');
+        }
+        if (results.length > 0) {
+            res.render('study_groups_details', { study_groups: results[0]});
+        } 
+        else
+        {
+            res.status(404).send('groups not found');
+        }
+    });
+});
+
+//Justin get edit 
+app.get('/study_groups_edit/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM study_groups WHERE id = ?';
+    
+    db.query(sql, [id], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving study_groups by ID');
+        }
+        if (results.length > 0) {
+            res.render('study_groups_edit', { study_groups: results[0]});
+        } 
+        else
+        {
+            res.status(404).send('groups not found');
+        }
+    });
+});
+
+//Justin post edit
+app.post('/study_groups_edit/:id', (req, res) => {
+    const id = req.params.id;
+    const { name, subject_id, members } = req.body;
+
+    const sql = 'UPDATE study_groups SET name = ?, subject_id = ?, members = ? WHERE id = ?';
+    db.query(sql, [name, subject_id, members, id], (error, result) => {
+        if (error) {
+            console.error('Database update error:', error.message);
+            return res.status(500).send('Error updating study group');
+        }
+        res.redirect('/study_groups');
+    });
+});
+
+//Justin delete
+app.get('/study_groups_delete/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'DELETE FROM study_groups WHERE id = ?';
+
+    db.query(sql, [id], (error, result) => {
+        if (error) {
+            console.error('Database delete error:', error.message);
+            return res.status(500).send('Error deleting study group');
+        }
+        res.redirect('/study_groups');
+    });
+});
+
+//Justin add get
+app.get('/study_groups_add', checkAuthenticated, (req, res) => {
+    res.render('study_groups_add'); // Assuming you have views/study_groups_add.ejs
+});
+
+//Justin add post
+app.post('/study_groups_add', checkAuthenticated, (req, res) => {
+    const { name, subject_id, members } = req.body;
+
+    const sql = 'INSERT INTO study_groups (name, subject_id, members, created_at) VALUES (?, ?, ?, NOW())';
+
+    db.query(sql, [name, subject_id, members], (err, result) => {
+        if (err) {
+            console.error('Error inserting study group:', err);
+            return res.status(500).send('Error adding study group.');
+        }
+        res.redirect('/study_groups');
+    });
 });
 
 //dini
