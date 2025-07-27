@@ -124,48 +124,13 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/dashboard" style="font-weight: bold;">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Timetable</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Study Resources</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/subjects">Subjects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Study Groups</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Exam Schedules</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center">
-                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Logout</a>
-            </div>
-        </div>
-    </nav>
     
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="bi bi-plus-circle"></i> Add New Subject</h2>
+                        <h2> Add New Subject</h2>
                     </div>
                     <div class="card-body p-4">
                         <form action="/subjects/add" method="POST">
@@ -183,10 +148,10 @@
                             </div>
                             <div class="d-flex gap-3">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Add Subject
+                                     Add Subject
                                 </button>
                                 <a href="/subjects" class="btn back-btn">
-                                    <i class="bi bi-arrow-left"></i> Back to Subjects
+                                     Back to Subjects
                                 </a>
                             </div>
                         </form>
