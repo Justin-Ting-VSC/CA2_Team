@@ -156,6 +156,16 @@ app.get('/timetable', checkAuthenticated, (req, res) => {
     res.render('timetable', { user: req.session.user });
 });
 
+app.get('/', (req, res) => {
+  db.query('SELECT * FROM timetable', (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send('Database error');
+    }
+    res.render('timetable', { entries: results });
+  });
+});
+
 //shem resources
 app.get('/resources', checkAuthenticated, (req, res) => {
     res.render('resources', { user: req.session.user });
