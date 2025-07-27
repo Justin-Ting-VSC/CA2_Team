@@ -166,6 +166,7 @@ app.get('/subjects', checkAuthenticated, async (req, res) => {
     });
 });
 
+//hariz edit 
 app.get('/subjects/edit/:id', checkAuthenticated, async (req, res) => {
     const subjectId = req.params.id;
 
@@ -183,6 +184,7 @@ app.get('/subjects/edit/:id', checkAuthenticated, async (req, res) => {
     });
 });
 
+//hariz edit the thing
 app.post('/subjects/edit/:id', checkAuthenticated, (req, res) => {
     const subjectId = req.params.id;
     const { name, code, description } = req.body;
@@ -194,6 +196,7 @@ app.post('/subjects/edit/:id', checkAuthenticated, (req, res) => {
     });
 });
 
+//hariz add
 app.post('/subjects/add', checkAuthenticated, (req, res) => {
     const { name, code, description } = req.body;
 
@@ -208,6 +211,7 @@ app.post('/subjects/add', checkAuthenticated, (req, res) => {
     });
 });
 
+//hariz search
 app.get('/subjects/search', checkAuthenticated, (req, res) => {
     const { name = '', code = '' } = req.query;
 
@@ -232,6 +236,7 @@ app.get('/subjects/search', checkAuthenticated, (req, res) => {
     });
 });
 
+//hariz delete
 app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
     const subjectId = req.params.id;
 
@@ -242,6 +247,7 @@ app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
     });
 });
 
+//hariz views
 app.get('/subjects/view/:id', checkAuthenticated, (req, res) => {
     const subjectId = req.params.id;
 
