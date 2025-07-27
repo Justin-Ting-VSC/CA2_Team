@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+    <nav style="background-color: #4B2E2E; margin: 0; padding: 0; border-radius: 0; border: none;" class="navbar navbar-expand-lg">
+        <div style="width: 100%; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; background-color: #4B2E2E;">
+            <div class="d-flex align-items-center flex-grow-1">
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; background: transparent;">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                </button>
+                <div class="collapse navbar-collapse d-lg-block" id="navbarNav">
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard" style="color: #F5F5DC; margin-right: 1.5rem; font-weight: bold; text-decoration: none; padding: 0.5rem;">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/timetable" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Timetable</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resources" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Study Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/subjects" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/study_groups" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/exams" style="color: #F5F5DC; margin-right: 1.5rem; text-decoration: none; padding: 0.5rem;">Exam Schedules</a>
+                        </li>
+                    </ul>
+                </div>
+
+            <div class="d-flex align-items-center">
+                <% if (user.role === 'admin') { %>
+                    <a href="/admin" class="btn admin-btn" style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Admin Dashboard</a>
+                <% } %>
+                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <style>
+        .navbar {
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .nav-link {
+            transition: background 0.2s, text-decoration 0.2s;
+            margin-right: 0.5rem;
+        }
+        .nav-link:hover {
+            background-color: #5C3A3A;
+            color: #FFF;
+            text-decoration: underline;
+            border-radius: 5px;
+        }
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+        
+        /* Button hover effects */
+        .admin-btn:hover {
+            background-color: #E6B614 !important;
+            color: #2C1810 !important;
+            text-decoration: none !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .logout-btn:hover {
+            background-color: #C94A4A !important;
+            color: #F5F5DC !important;
+            text-decoration: none !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+
+    
+    <div class="container">
+        <h1 class="mt-5">Dashboard</h1>
+        <p>Welcome, <%= user.username %> (<%= user.role %>)</p>
+    </div>
+
+</body>
+</html>
