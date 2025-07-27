@@ -159,12 +159,18 @@
             </div>
 
             <div class="d-flex align-items-center">
-                <!-- Admin button would go here if user.role === 'admin' -->
-                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Logout</a>
+                <% if (user.role === 'admin') { %>
+                    <a href="/admin" class="btn admin-btn" style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+                        Admin Dashboard
+                    </a>
+                <% } %>
+                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+                    Logout
+                </a>
             </div>
         </div>
     </nav>
-    
+
     <div class="container">
 
             <h1 style="font-size: 3rem;text-align: center;">˙✧˖°🎓 Subjects 📓✩</h1>
