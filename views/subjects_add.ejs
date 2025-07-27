@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Subject</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #e6dfd0;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: #4B2E2E !important;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .nav-link {
+            transition: background 0.2s, text-decoration 0.2s;
+            margin-right: 0.5rem;
+            color: #F5F5DC !important;
+        }
+        
+        .nav-link:hover {
+            background-color: #5C3A3A !important;
+            color: #FFF !important;
+            text-decoration: underline;
+            border-radius: 5px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .btn {
+            border-radius: 8px;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #343a40;
+            border-color: #ced4da;
+        }
+        
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3, h4 {
+            color: #19202f;
+            margin-bottom: 30px;
+        }
+        
+        .btn-outline-secondary {
+            color: #19202f;
+            border-color: #19202f;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: #19202f;
+            color: #ffffff;
+        }
+        
+        .logout-btn:hover {
+            background-color: #C94A4A !important;
+            color: #F5F5DC !important;
+            text-decoration: none !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #19202f;
+        }
+
+        .card-header {
+            background-color: #4B2E2E;
+            color: #F5F5DC;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+        }
+
+        .card-header h2 {
+            color: #F5F5DC;
+            margin-bottom: 0;
+        }
+
+        .back-btn {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard" style="font-weight: bold;">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Timetable</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Study Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/subjects">Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Exam Schedules</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Logout</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="bi bi-plus-circle"></i> Add New Subject</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/subjects/add" method="POST">
+                            <div class="mb-4">
+                                <label for="name" class="form-label">Subject Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter subject name" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="code" class="form-label">Subject Code</label>
+                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter subject code (e.g., CS101)" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter subject description" required></textarea>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Add Subject
+                                </button>
+                                <a href="/subjects" class="btn back-btn">
+                                    <i class="bi bi-arrow-left"></i> Back to Subjects
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -242,6 +242,27 @@ app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
     });
 });
 
+app.get('/subjects/view/:id', checkAuthenticated, (req, res) => {
+    const subjectId = req.params.id;
+
+    db.query('SELECT * FROM subjects WHERE id = ?', [subjectId], (err, results) => {
+        if (err) throw err;
+        if (results.length === 0) {
+            return res.status(404).send('Subject not found');
+        }
+
+        res.render('subjects_view', {
+            user: req.session.user,
+            subject: results[0]
+        });
+    });
+});
+
+// Add this route for the GET request to show the add subject page
+app.get('/subjects/add', checkAuthenticated, checkAdmin, (req, res) => {
+    res.render('subjects_add', { user: req.session.user });
+});
+
 //hsuan timetable
 app.get('/timetable', checkAuthenticated, (req, res) => {
     res.render('timetable', { user: req.session.user });
