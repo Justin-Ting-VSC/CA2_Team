@@ -116,21 +116,49 @@
     </style>
 </head>
 <body>
-    <%- include('partials/header') %> <!-- Move header include here -->
-
+    <%- include('partials/header') %> 
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 rounded-lg shadow-sm">
-            ...
+            <div class="container-fluid">
+                <a class="navbar-brand text-dark fw-bold" href="/">SG Study Buddy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="/timetable">Timetable</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/study_groups">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="/subjects">Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/exams">Exams</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
+
+        <footer class="footer">
+            <p>&copy; SG Study Buddy & Co.</p>
+        </footer>
     </div>
 
     <div class="container content-wrapper">
         <h2 class="mb-4">Study Timetable</h2>
-        <% if (entries && entries.length === 0) { %>
+
+        <% if (entries.length === 0) { %>
             <div class="alert alert-warning">
                 No timetable entries found.
             </div>
-        <% } else if (entries) { %>
+        <% } else { %>
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
@@ -151,8 +179,7 @@
             </table>
         <% } %>
     </div>
-
-    <%- include('partials/header') %>
+    
     <footer class="footer">
         <p>&copy; SG Study Buddy & Co.</p>
     </footer> <!-- Move footer here -->
