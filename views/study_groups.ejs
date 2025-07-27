@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>study_group</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Study Groups</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
-        <h1>Study Groups</h1>
-        
+        <h1 class="text-center">Study Groups</h1>
+        <a class="nav-link" href="/study_groups_add">Add a new plan</a>
+        <table class="table table-hover small text-center">
+            <thead>
+                <tr>
+                    <th width="100">Group Name</th>
+                    <th width="100">Subject ID</th>
+                    <th width="50">Members</th>
+                    <th width="50">Date and Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i = 0; i < study_groups.length; i++) { %>
+                    <tr>
+                        <td><a href="/study_groups_details/<%= study_groups[i].id %>"><%= study_groups[i].name %></a></td>
+                        <td><%= study_groups[i].subject_id %></td>
+                        <td><%= study_groups[i].members %></td>
+                        <td><%= study_groups[i].created_at %></td>
+                        <td><a href="/study_groups_edit/<%= study_groups[i].id %>">Edit</a></td>
+                        <td><a href="/study_groups_delete/<%= study_groups[i].id%>" onclick="return confirm('Are you sure you want to delete this?')">Delete</a></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
