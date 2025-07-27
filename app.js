@@ -236,17 +236,6 @@ app.get('/subjects/search', checkAuthenticated, (req, res) => {
     });
 });
 
-//hariz delete
-app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
-    const subjectId = req.params.id;
-
-    const sql = 'DELETE FROM subjects WHERE id = ?';
-    db.query(sql, [subjectId], (err) => {
-        if (err) throw err;
-        res.redirect('/subjects');
-    });
-});
-
 //hariz views
 app.get('/subjects/view/:id', checkAuthenticated, (req, res) => {
     const subjectId = req.params.id;
