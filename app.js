@@ -168,8 +168,147 @@ app.get('/subjects', checkAuthenticated, async (req, res) => {
 });
 
 //hsuan timetable
+// View all Timetable Entries (and handle search results)
 app.get('/timetable', checkAuthenticated, (req, res) => {
-    res.render('timetable', { user: req.session.user });
+    const { subject, day } = req.query; // Get search parameters from query string
+    let displayEntries = timetableEntries; // Start with all entries
+
+    // Apply filters if search parameters are present
+    if (subject) {
+        displayEntries = displayEntries.filter(entry =>
+            entry.subject.toLowerCase().includes(subject.toLowerCase())
+        );
+    }
+    if (day) {
+        displayEntries = displayEntries.filter(entry =>
+            entry.day.toLowerCase().includes(day.toLowerCase())
+        );
+    }
+
+    res.render('timetable', {
+        title: 'Study Timetable',
+        user: req.session.user,
+        entries: displayEntries, // Pass filtered entries
+        searchSubject: subject || '', // Pass search term back to form
+        searchDay: day || '',       // Pass search term back to form
+        messages: req.flash('success'), // Pass success messages
+        errors: req.flash('error')    // Pass error messages
+    });
+});
+
+let timetableEntries = [
+    { id: 1, subject: 'Mathematics', day: 'Monday', time_slot: '10:00 - 12:00' },
+    { id: 2, subject: 'Physics', day: 'Wednesday', time_slot: '14:00 - 16:00' },
+    { id: 3, subject: 'Chemistry', day: 'Friday', time_slot: '09:00 - 11:00' },
+];
+let nextId = 4; // To assign unique IDs
+
+// Add new Timetable Entry (GET for form)
+app.get('/timetable/add', checkAuthenticated, (req, res) => {
+    res.render('add_timetable', {
+        title: 'Add New Entry',
+        user: req.session.user,
+        messages: req.flash('error') // For any form validation errors
+    });
+});
+
+// Add new Timetable Entry (POST for submission)
+app.post('/timetable/add', checkAuthenticated, (req, res) => {
+    const { subject, day, time_slot } = req.body;
+
+    if (!subject || !day || !time_slot) {
+        req.flash('error', 'All fields are required to add a timetable entry.');
+        return res.redirect('/timetable/add');
+    }
+
+    const newEntry = {
+        id: nextId++,
+        subject,
+        day,
+        time_slot
+    };
+    timetableEntries.push(newEntry);
+    req.flash('success', 'Timetable entry added successfully!');
+    res.redirect('/timetable');
+});
+
+// Edit Timetable Entry (GET for form)
+app.get('/timetable/edit/:id', checkAuthenticated, (req, res) => {
+    const entry = timetableEntries.find(e => e.id == req.params.id);
+    if (!entry) {
+        req.flash('error', 'Timetable entry not found.');
+        return res.redirect('/timetable');
+    }
+    res.render('edit_timetable', {
+        title: 'Edit Entry',
+        user: req.session.user,
+        entry,
+        messages: req.flash('error') // For any form validation errors
+    });
+});
+
+// Edit Timetable Entry (POST for submission)
+app.post('/timetable/edit/:id', checkAuthenticated, (req, res) => {
+    const entryIndex = timetableEntries.findIndex(e => e.id == req.params.id);
+    if (entryIndex === -1) {
+        req.flash('error', 'Timetable entry not found for editing.');
+        return res.redirect('/timetable');
+    }
+
+    const { subject, day, time_slot } = req.body;
+
+    if (!subject || !day || !time_slot) {
+        req.flash('error', 'All fields are required to update a timetable entry.');
+        return res.redirect(`/timetable/edit/${req.params.id}`);
+    }
+
+    timetableEntries[entryIndex] = {
+        id: parseInt(req.params.id), // Ensure ID remains the same
+        subject,
+        day,
+        time_slot
+    };
+    req.flash('success', 'Timetable entry updated successfully!');
+    res.redirect('/timetable');
+});
+
+// Delete Timetable Entry (POST)
+app.post('/timetable/delete/:id', checkAuthenticated, (req, res) => {
+    const timetableId = req.params.id;
+    const userId = req.session.user.id; // Security: ensure user can only delete their own entries
+    
+    // First check if the entry exists and belongs to the current user
+    const checkSql = 'SELECT * FROM timetable WHERE id = ? AND user_id = ?';
+    db.query(checkSql, [timetableId, userId], (checkError, checkResults) => {
+        if (checkError) {
+            console.error("Error checking timetable entry:", checkError);
+            req.flash('error', 'Error checking timetable entry.');
+            return res.redirect('/timetable');
+        }
+        
+        if (checkResults.length === 0) {
+            req.flash('error', 'Timetable entry not found or you do not have permission to delete it.');
+            return res.redirect('/timetable');
+        }
+        
+        // If entry exists and belongs to user, proceed with deletion
+        const deleteSql = 'DELETE FROM timetable WHERE id = ? AND user_id = ?';
+        db.query(deleteSql, [timetableId, userId], (deleteError, deleteResults) => {
+            if (deleteError) {
+                console.error("Error deleting timetable entry:", deleteError);
+                req.flash('error', 'Error deleting timetable entry.');
+                return res.status(500).redirect('/timetable');
+            }
+            
+            if (deleteResults.affectedRows > 1) {
+                req.flash('success', 'Timetable entry deleted successfully!');
+            } else {
+                req.flash('error', 'Failed to delete timetable entry.');
+            }
+            
+            res.redirect('/timetable');
+        });
+    });
 });
 
 //shem resources
