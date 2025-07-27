@@ -5,6 +5,22 @@ const flash = require('connect-flash');
 
 const app = express();
 
+
+//image 
+const multer = require('multer');
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/images'); // Directory to save uploaded files
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); 
+    }
+});
+
+const upload = multer({ storage: storage });
+
 // Database connection
 const db = mysql.createConnection({
     host: 'dddgt5.h.filess.io',
@@ -156,24 +172,14 @@ app.get('/timetable', checkAuthenticated, (req, res) => {
     res.render('timetable', { user: req.session.user });
 });
 
-app.get('/', (req, res) => {
-  db.query('SELECT * FROM timetable', (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.send('Database error');
-    }
-    res.render('timetable', { entries: results });
-  });
-});
-
 //shem resources
 app.get('/resources', checkAuthenticated, (req, res) => {
     res.render('resources', { user: req.session.user });
 });
 
-//justin groups
-app.get('/groups', checkAuthenticated, (req, res) => {
-    res.render('groups', { user: req.session.user });
+//justin study groups
+app.get('/study_groups', checkAuthenticated, (req, res) => {
+    res.render('study_groups', { user: req.session.user });
 });
 
 //dini
