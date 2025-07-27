@@ -253,6 +253,53 @@ app.get('/subjects/view/:id', checkAuthenticated, (req, res) => {
     });
 });
 
+//hariz delete
+app.get('/subjects_delete/:id', checkAuthenticated, checkAdmin, (req, res) => {
+    const id = req.params.id;
+
+    // Delete related exams
+    db.query('DELETE FROM exams WHERE subject_id = ?', [id], (err) => {
+        if (err) {
+            console.error('Error deleting related exams:', err.message);
+            return res.status(500).send('Error deleting related exams');
+        }
+
+        // Delete related timetable entries
+        db.query('DELETE FROM timetable WHERE subject_id = ?', [id], (err) => {
+            if (err) {
+                console.error('Error deleting related timetable entries:', err.message);
+                return res.status(500).send('Error deleting related timetable entries');
+            }
+
+            // Delete related study groups
+            db.query('DELETE FROM study_groups WHERE subject_id = ?', [id], (err) => {
+                if (err) {
+                    console.error('Error deleting related study groups:', err.message);
+                    return res.status(500).send('Error deleting related study groups');
+                }
+
+                // Delete related resources
+                db.query('DELETE FROM resources WHERE subject_id = ?', [id], (err) => {
+                    if (err) {
+                        console.error('Error deleting related resources:', err.message);
+                        return res.status(500).send('Error deleting related resources');
+                    }
+
+                    // Finally delete the subject
+                    db.query('DELETE FROM subjects WHERE id = ?', [id], (err) => {
+                        if (err) {
+                            console.error('Database delete error:', err.message);
+                            return res.status(500).send('Error deleting subject');
+                        }
+
+                        res.redirect('/subjects');
+                    });
+                });
+            });
+        });
+    });
+});
+
 // Add this route for the GET request to show the add subject page
 app.get('/subjects/add', checkAuthenticated, checkAdmin, (req, res) => {
     res.render('subjects_add', { user: req.session.user });
