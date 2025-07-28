@@ -141,8 +141,25 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.get('/dashboard', checkAuthenticated, (req, res) => {
-    res.render('dashboard', { user: req.session.user });
+app.get('/dashboard', checkAuthenticated, async (req, res) => {
+    try {
+        const [subjects] = await db.promise().query('SELECT COUNT(*) AS total FROM subjects');
+        const [exams] = await db.promise().query('SELECT COUNT(*) AS total FROM exams');
+        const [groups] = await db.promise().query('SELECT COUNT(*) AS total FROM study_groups');
+
+        res.render('dashboard', {
+            user: req.session.user,
+            stats: {
+                subjects: subjects[0].total,
+                exams: exams[0].total,
+                studyGroups: groups[0].total
+            },
+            recentUpdates: [] // Add this line
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error loading dashboard.');
+    }
 });
 
 app.get('/admin', (req, res) => {
