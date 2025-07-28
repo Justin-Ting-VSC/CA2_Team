@@ -212,7 +212,7 @@
                                     <% if (user.role==='admin' ) { %>
                                         <th>Edit</th>
                                         <th>Delete</th>
-                                        <% } %>
+                                    <% } %>
                                 </tr>
                             </thead>
                             <tbody>
@@ -230,10 +230,12 @@
                                         <td>
                                             <%= (r.created_at instanceof Date ? r.created_at : new
                                                 Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
-                                        <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
                                         <% if (user.role === ' admin') { %>
                                         <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a>
+                                        <% } %>
+                                        <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
                                         </td>
+                                        <% if (user.role === ' admin') { %>
                                         <td>
 
                                             <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
@@ -242,7 +244,7 @@
                                                     onclick="return confirm(' Delete this resource?')">
                                                     Delete</button>
                                             </form>
-                                            <% } %>
+                                        <% } %>
                                         </td>
                                     </tr>
                                     <% }) %>
