@@ -671,8 +671,191 @@ app.post('/study_groups_add', checkAuthenticated, (req, res) => {
 
 //dini
 app.get('/exams', checkAuthenticated, (req, res) => {
-    res.render('exams', { user: req.session.user });
+    const sql = `
+        SELECT e.*, s.name as subject_name, s.code as subject_code 
+        FROM exams e 
+        LEFT JOIN subjects s ON e.subject_id = s.id 
+        ORDER BY e.date ASC
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        res.render('exams', {
+            user: req.session.user,
+            exams: results
+        });
+    });
 });
+
+//dini edit exam
+app.get('/exams/edit/:id', checkAuthenticated, (req, res) => {
+    const examId = req.params.id;
+
+    const sql = `
+        SELECT e.*, s.name as subject_name, s.code as subject_code 
+        FROM exams e 
+        LEFT JOIN subjects s ON e.subject_id = s.id 
+        WHERE e.id = ?
+    `;
+
+    db.query(sql, [examId], (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+            return res.status(404).send('Exam not found');
+        }
+
+        // Get all subjects for dropdown
+        db.query('SELECT * FROM subjects', (err, subjects) => {
+            if (err) throw err;
+            
+            res.render('exams_edit', {
+                user: req.session.user,
+                exam: results[0],
+                subjects: subjects
+            });
+        });
+    });
+});
+
+//dini edit the exam
+app.post('/exams/edit/:id', checkAuthenticated, (req, res) => {
+    const examId = req.params.id;
+    const { subject_id, date, venue, time, duration, retake } = req.body;
+    
+    // Convert retake checkbox to boolean (1 if checked, 0 if not)
+    const isRetake = retake === 'on' ? 1 : 0;
+    
+    // Handle empty values properly - convert empty strings to NULL for optional fields
+    const cleanTime = time === '' ? null : time;
+    const cleanDuration = duration === '' ? null : parseInt(duration) || null;
+
+    const sql = 'UPDATE exams SET subject_id = ?, date = ?, venue = ?, time = ?, duration = ?, retake = ? WHERE id = ?';
+    db.query(sql, [subject_id, date, venue, cleanTime, cleanDuration, isRetake, examId], (err) => {
+        if (err) {
+            console.error('Error updating exam:', err);
+            return res.status(500).send('Error updating exam: ' + err.message);
+        }
+        res.redirect('/exams');
+    });
+});
+
+//dini add exam
+app.post('/exams/add', checkAuthenticated, (req, res) => {
+    const { subject_id, date, venue, time, duration, retake } = req.body;
+    
+    // Convert retake checkbox to boolean (1 if checked, 0 if not)
+    const isRetake = retake === 'on' ? 1 : 0;
+    
+    // Handle empty values properly - convert empty strings to NULL for optional fields
+    const cleanTime = time === '' ? null : time;
+    const cleanDuration = duration === '' ? null : parseInt(duration) || null;
+    
+    console.log('Received exam data:', { subject_id, date, venue, time: cleanTime, duration: cleanDuration, retake: isRetake });
+
+    const sql = 'INSERT INTO exams (subject_id, date, venue, time, duration, retake, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())';
+
+    db.query(sql, [subject_id, date, venue, cleanTime, cleanDuration, isRetake], (err, result) => {
+        if (err) {
+            console.error('Error inserting exam:', err);
+            console.error('SQL:', sql);
+            console.error('Values:', [subject_id, date, venue, cleanTime, cleanDuration, isRetake]);
+            return res.status(500).send('Error adding exam: ' + err.message);
+        }
+        console.log('Exam added successfully:', result.insertId);
+        res.redirect('/exams');
+    });
+});
+
+//dini search exams
+app.get('/exams/search', checkAuthenticated, (req, res) => {
+    const { name = '', code = '' } = req.query;
+
+    const sql = `
+        SELECT e.*, s.name as subject_name, s.code as subject_code 
+        FROM exams e 
+        LEFT JOIN subjects s ON e.subject_id = s.id 
+        WHERE s.name LIKE ? AND s.code LIKE ?
+        ORDER BY e.date ASC
+    `;
+
+    const searchName = `%${name}%`;
+    const searchCode = `%${code}%`;
+
+    db.query(sql, [searchName, searchCode], (err, results) => {
+        if (err) {
+            console.error('Search error:', err);
+            return res.status(500).send('Search failed.');
+        }
+
+        res.render('exams', {
+            user: req.session.user,
+            exams: results
+        });
+    });
+});
+
+//dini view exam
+app.get('/exams/view/:id', checkAuthenticated, (req, res) => {
+    const examId = req.params.id;
+
+    const sql = `
+        SELECT e.*, s.name as subject_name, s.code as subject_code, s.description as subject_description 
+        FROM exams e 
+        LEFT JOIN subjects s ON e.subject_id = s.id 
+        WHERE e.id = ?
+    `;
+
+    db.query(sql, [examId], (err, results) => {
+        if (err) throw err;
+        if (results.length === 0) {
+            return res.status(404).send('Exam not found');
+        }
+
+        res.render('exams_view', {
+            user: req.session.user,
+            exam: results[0]
+        });
+    });
+});
+
+//dini delete exam
+app.get('/exams_delete/:id', checkAuthenticated, checkAdmin, (req, res) => {
+    const id = req.params.id;
+
+    db.query('DELETE FROM exams WHERE id = ?', [id], (err) => {
+        if (err) {
+            console.error('Database delete error:', err.message);
+            return res.status(500).send('Error deleting exam');
+        }
+        res.redirect('/exams');
+    });
+});
+
+// POST route for exam deletion (from edit form)
+app.post('/exams/delete/:id', checkAuthenticated, checkAdmin, (req, res) => {
+    const id = req.params.id;
+
+    db.query('DELETE FROM exams WHERE id = ?', [id], (err) => {
+        if (err) {
+            console.error('Database delete error:', err.message);
+            return res.status(500).send('Error deleting exam');
+        }
+        res.redirect('/exams');
+    });
+});
+
+//dini add exam page
+app.get('/exams/add', checkAuthenticated, checkAdmin, (req, res) => {
+    // Get all subjects for dropdown
+    db.query('SELECT * FROM subjects', (err, subjects) => {
+        if (err) throw err;
+        
+        res.render('exams_add', { 
+            user: req.session.user,
+            subjects: subjects
+        });
+    });});
 
 // Start server 
 app.listen(3000, () => {
