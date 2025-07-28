@@ -272,34 +272,17 @@ app.post('/timetable/edit/:id', checkAuthenticated, (req, res) => {
     res.redirect('/timetable');
 });
 
-//delete
-app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
-    const subjectId = req.params.id;
+// Delete Timetable Entry
+app.get('/timetable/delete/:id', checkAuthenticated, (req, res) => {
+    const entryIndex = timetableEntries.findIndex(e => e.id == req.params.id);
+    if (entryIndex === -1) {
+        req.flash('error', 'Timetable entry not found.');
+        return res.redirect('/timetable');
+    }
     
-    console.log('🔍 POST DELETE REQUEST:', subjectId);
-    
-    const sql = 'DELETE FROM subjects WHERE id = ?';
-    db.query(sql, [subjectId], (error, results) => {
-        if (error) {
-            console.error("❌ Error deleting subject:", error);
-            req.flash('error', 'Error deleting subject: ' + error.message);
-            return res.redirect('/subjects');
-        }
-        
-        console.log('📊 Delete Results:', {
-            affectedRows: results.affectedRows,
-            insertId: results.insertId,
-            warningCount: results.warningCount
-        });
-        
-        if (results.affectedRows > 0) {
-            req.flash('success', 'Subject deleted successfully!');
-        } else {
-            req.flash('error', 'Subject not found or already deleted.');
-        }
-        
-        res.redirect('/subjects');
-    });
+    timetableEntries.splice(entryIndex, 1);
+    req.flash('success', 'Timetable entry deleted successfully!');
+    res.redirect('/timetable');
 });
 
 //shem resources
