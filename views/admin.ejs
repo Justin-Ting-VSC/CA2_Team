@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User Role</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body { background-color: #f4f1ea; }
+    .btn-brown { background-color: #4B2E2E; color: white; }
+    .btn-outline-brown { border-color: #4B2E2E; color: #4B2E2E; }
+    .btn-outline-brown:hover { background-color: #4B2E2E; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <% if (user && user.role === 'admin') { %>
+      <a href="/dashboard" class="btn btn-sm btn-outline-secondary mb-3">← Back to Dashboard</a>
+
+      <div class="card shadow p-4">
+        <h3>Edit User Role</h3>
+
+        <% if (users && users.length > 0) { %>
+          <table class="table table-bordered text-center mt-3">
+            <thead class="thead-dark">
+              <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Current Role</th>
+                <th>New Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(u => { %>
+                <tr>
+                  <td><%= u.id %></td>
+                  <td><%= u.username %></td>
+                  <td><%= u.email %></td>
+                  <td><%= u.role %></td>
+                  <td>
+                    <form action="/editRole/<%= u.id %>" method="POST" class="form-inline justify-content-center">
+                      <select name="role" class="form-control mr-2" required>
+                        <option value="user" <%= u.role === 'user' ? 'selected' : '' %>>User</option>
+                        <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                      </select>
+                      <button class="btn btn-sm btn-brown">Update</button>
+                    </form>
+                  </td>
+                  <td>
+                    <% if (u.id !== user.id) { %>
+                      <form action="/deleteUser/<%= u.id %>" method="POST" onsubmit="return confirm('Delete this user?');">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                      </form>
+                    <% } else { %>
+                      <span class="text-muted">Self</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p class="text-center">No users found.</p>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-danger">Access denied.</div>
+    <% } %>
+  </div>
+</body>
+</html>
