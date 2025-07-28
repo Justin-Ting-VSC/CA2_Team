@@ -467,17 +467,26 @@ app.get('/resources', checkAuthenticated, (req, res) => {
 // search resources (GET)
 app.get('/searchResource', checkAuthenticated, (req, res) => {
     const { name = '', subject = '' } = req.query;
+    const nameSearch = `%${name}%`;
+    const subjectSearch = `%${subject}%`;
+
     const sql = `
-    SELECT * FROM resources
-    WHERE title LIKE ? AND subject_id LIKE ?
-    ORDER BY created_at DESC
-  `;
-    db.query(sql, `[%${name}%, %${subject}%]`, (err, results) => {
+        SELECT * FROM resources
+        WHERE title LIKE ? AND subject_id LIKE ?
+        ORDER BY created_at DESC
+    `;
+
+    db.query(sql, [nameSearch, subjectSearch], (err, results) => {
         if (err) {
             console.error('DB error (search):', err);
             return res.status(500).send('Database error');
         }
-        res.render('resources', {nameQuery: name, subjectQuery: subject, user: req.session.user,resources: results});
+        res.render('resources', {
+            nameQuery: name,
+            subjectQuery: subject,
+            user: req.session.user,
+            resources: results
+        });
     });
 });
 

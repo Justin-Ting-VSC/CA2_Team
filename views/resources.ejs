@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Study Resources</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f4f1ea;
+            font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: white;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
 
         .btn-brown {
@@ -27,15 +31,6 @@
         .table thead {
             background-color: #4B2E2E;
             color: white;
-        }
-
-        body {
-            font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: white;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
         }
 
         .navbar {
@@ -63,7 +58,6 @@
             color: #F5F5DC !important;
         }
 
-        /* Button hover effects */
         .admin-btn:hover {
             background-color: #E6B614 !important;
             color: #2C1810 !important;
@@ -86,21 +80,11 @@
             padding: 20px;
         }
 
-        h1 {
+        h2 {
             color: #19202f;
             margin-bottom: 30px;
             text-align: center;
             font-size: 3rem;
-        }
-
-        .welcome-text {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.2rem;
         }
 
         .navbar-toggler {
@@ -124,136 +108,109 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/dashboard" style="font-weight: bold;">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/timetable">Timetable</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/resources">Study Resources</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/subjects">Subjects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="study_groups">Study Groups</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/exams">Exam Schedules</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard" style="font-weight: bold;">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/timetable">Timetable</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/resources">Study Resources</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/subjects">Subjects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/study_groups">Study Groups</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/exams">Exam Schedules</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="d-flex align-items-center">
-                <% if (user.role==='admin' ) { %>
+                <% if (user.role === 'admin') { %>
                     <a href="/admin" class="btn admin-btn"
                         style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
                         Admin Dashboard
                     </a>
-                    <% } %>
-                        <a href="/logout" class="btn logout-btn"
-                            style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
-                            Logout
-                        </a>
+                <% } %>
+                <a href="/logout" class="btn logout-btn"
+                    style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+                    Logout
+                </a>
             </div>
         </div>
     </nav>
-    </head>
 
-    <body>
-        <div class="container mt-5">
-            <h2 class="mb-4">🔍︎ Study Resources ⋆˚꩜｡</h2>
+    <div class="container mt-5">
+        <h2>🔍︎ Study Resources ⋆˚꩜｡</h2>
 
-            <!-- search resource -->
-            <form class="form-inline mb-4" method="GET" action="/searchResource">
-                <input type="text" name="name" class="form-control mr-2" placeholder="Search by title"
-                    value="<%= nameQuery %>">
-                <button class="btn btn-outline-brown">Search</button>
-            </form>
+        <!-- search bar -->
+        <form class="form-inline mb-4" method="GET" action="/searchResource">
+            <input type="text" name="name" class="form-control mr-2" placeholder="Search by title" value="<%= nameQuery %>">
+            <button class="btn btn-outline-brown">Search</button>
+        </form>
 
-            <!-- add resource -->
-            <% if (user.role==='admin' ) { %>
-                <form action="/addResource" method="POST" class="mb-5">
-                    <div class="form-row">
-                        <div class="col-md-2"><input type="text" name="subject_id" class="form-control"
-                                placeholder="Subject ID" required></div>
-                        <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title"
-                                required></div>
-                        <div class="col-md-2">
-                            <select name="type" class="form-control" required>
-                                <option value="">Type</option>
-                                <option value="video">Video</option>
-                                <option value="article">Article</option>
-                                <option value="document">Document</option>
-                                <option value="quiz">Quiz</option>
-                                <option value="case_study">Case Study</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3"><input type="url" name="url" class="form-control"
-                                placeholder="Resource URL" required></div>
-                        <div class="col-md-2"><button class="btn btn-success btn-block">Add</button></div>
+        <!-- add resource form (admin only) -->
+        <% if (user.role === 'admin') { %>
+            <form action="/addResource" method="POST" class="mb-5">
+                <div class="form-row">
+                    <div class="col-md-2">
+                        <input type="text" name="subject_id" class="form-control" placeholder="Subject ID" required>
                     </div>
-                </form>
-                <% } %>
+                    <div class="col-md-3">
+                        <input type="text" name="title" class="form-control" placeholder="Title" required>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="type" class="form-control" required>
+                            <option value="">Type</option>
+                            <option value="video">Video</option>
+                            <option value="article">Article</option>
+                            <option value="document">Document</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="case_study">Case Study</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="url" name="url" class="form-control" placeholder="Resource URL" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success btn-block">Add</button>
+                    </div>
+                </div>
+            </form>
+        <% } %>
 
-                    <!-- resource table -->
-                    <% if (resources.length> 0) { %>
-                        <table class="table table-bordered text-center" style="border-radius:15px">
-
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Subject ID</th>
-                                    <th>Type</th>
-                                    <th>Created At</th>
-                                    <th>Details</th>
-                                    <% if (user.role==='admin' ) { %>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    <% } %>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% resources.forEach(r=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= r.title %>
-                                        </td>
-                                        <td>
-                                            <%= r.subject_id %>
-                                        </td>
-                                        <td>
-                                            <%= r.type %>
-                                        </td>
-                                        <td>
-                                            <%= (r.created_at instanceof Date ? r.created_at : new
-                                                Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
-                                        <% if (user.role === ' admin') { %>
-                                        <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a>
-                                        <% } %>
-                                        <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
-                                        </td>
-                                        <% if (user.role === ' admin') { %>
-                                        <td>
-
-                                            <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
-
-                                                <button class="btn btn-sm btn-danger"
-                                                    onclick="return confirm(' Delete this resource?')">
-                                                    Delete</button>
-                                            </form>
-                                        <% } %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                        <% } else { %>
-                            <div class="alert alert-warning">No resources found.</div>
+        <!-- resource table -->
+        <% if (resources.length > 0) { %>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Subject ID</th>
+                        <th>Type</th>
+                        <th>Created At</th>
+                        <th>Details</th>
+                        <% if (user.role === 'admin') { %>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% resources.forEach(r => { %>
+                        <tr>
+                            <td><%= r.title %></td>
+                            <td><%= r.subject_id %></td>
+                            <td><%= r.type %></td>
+                            <td><%= (r.created_at instanceof Date ? r.created_at : new Date(r.created_at)).toISOString().slice(0, 19).replace('T', ' ') %></td>
+                            <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
+                            <% if (user.role === 'admin') { %>
+                                <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a></td>
+                                <td>
+                                    <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this resource?')">Delete</button>
+                                    </form>
+                                </td>
                             <% } %>
-        </div>
-    </body>
-
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="alert alert-warning">No resources found.</div>
+        <% } %>
+    </div>
+</body>
 </html>
