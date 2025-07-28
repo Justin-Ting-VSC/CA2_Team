@@ -31,7 +31,7 @@
 
         body {
             font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #e6dfd0;
+            background-color: white;
             color: #343a40;
             margin: 0;
             padding: 0;
@@ -158,14 +158,14 @@
         <div class="container mt-5">
             <h2 class="mb-4">🔍︎ Study Resources ⋆˚꩜｡</h2>
 
-            <!-- Search form -->
+            <!-- search resource -->
             <form class="form-inline mb-4" method="GET" action="/searchResource">
                 <input type="text" name="name" class="form-control mr-2" placeholder="Search by title"
                     value="<%= nameQuery %>">
                 <button class="btn btn-outline-brown">Search</button>
             </form>
 
-            <!-- Add new resource -->
+            <!-- add resource -->
             <form action="/addResource" method="POST" class="mb-5">
                 <div class="form-row">
                     <div class="col-md-2"><input type="text" name="subject_id" class="form-control"
@@ -188,9 +188,10 @@
                 </div>
             </form>
 
-            <!-- Resource table -->
+            <!-- resource table -->
             <% if (resources.length> 0) { %>
-                <table class="table table-bordered text-center">
+                <table class="table table-bordered text-center" style="border-radius:15px">
+                
                     <thead>
                         <tr>
                             <th>Title</th>
