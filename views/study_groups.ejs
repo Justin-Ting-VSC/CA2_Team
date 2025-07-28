@@ -207,13 +207,13 @@
         <div class="table-cell">
           <%= new Date(study_groups[i].created_at).toLocaleString() %>
         </div>
-        <% if (user.role === 'admin') { %>
         <div class="table-cell actions">
           <a href="/study_groups_details/<%= study_groups[i].id %>" class="btn btn-sm btn-yellow">👁️ View</a>
-          <a href="/study_groups_edit/<%= study_groups[i].id %>" class="btn btn-sm btn-outline-secondary admin-btn">✏️ Edit</a>
-          <a href="/study_groups_delete/<%= study_groups[i].id %>" onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-sm btn-outline-secondary logout-btn">🗑️ Delete</a>
+            <% if (user.role === 'admin') { %>
+                <a href="/study_groups_edit/<%= study_groups[i].id %>" class="btn btn-sm btn-outline-secondary admin-btn">✏️ Edit</a>
+                <a href="/study_groups_delete/<%= study_groups[i].id %>" onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-sm btn-outline-secondary logout-btn">🗑️ Delete</a>
+            <% } %>
         </div>
-        <% } %>
       </div>
     <% } %>
   </main>
