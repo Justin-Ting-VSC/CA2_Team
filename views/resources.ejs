@@ -1,81 +1,238 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Study Resources</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    body { background-color: #f4f1ea; }
-    .btn-brown { background-color: #4B2E2E; color: white; }
-    .btn-outline-brown { border-color: #4B2E2E; color: #4B2E2E; }
-    .btn-outline-brown:hover { background-color: #4B2E2E; color: white; }
-    .table thead { background-color: #4B2E2E; color: white; }
-  </style>
+    <title>Study Resources</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f1ea;
+        }
+
+        .btn-brown {
+            background-color: #4B2E2E;
+            color: white;
+        }
+
+        .btn-outline-brown {
+            border-color: #4B2E2E;
+            color: #4B2E2E;
+        }
+
+        .btn-outline-brown:hover {
+            background-color: #4B2E2E;
+            color: white;
+        }
+
+        .table thead {
+            background-color: #4B2E2E;
+            color: white;
+        }
+
+        body {
+            font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #e6dfd0;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #4B2E2E !important;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            transition: background 0.2s, text-decoration 0.2s;
+            margin-right: 0.5rem;
+            color: #F5F5DC !important;
+        }
+
+        .nav-link:hover {
+            background-color: #5C3A3A !important;
+            color: #FFF !important;
+            text-decoration: underline;
+            border-radius: 5px;
+        }
+
+        .navbar-brand {
+            font-size: 1.2rem;
+            color: #F5F5DC !important;
+        }
+
+        /* Button hover effects */
+        .admin-btn:hover {
+            background-color: #E6B614 !important;
+            color: #2C1810 !important;
+            text-decoration: none !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:hover {
+            background-color: #C94A4A !important;
+            color: #F5F5DC !important;
+            text-decoration: none !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #19202f;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .welcome-text {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .navbar-toggler {
+            border-color: #F5F5DC;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28245, 245, 220, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container mt-5">
-    <h2 class="mb-4">🔍︎ Study Resources ⋆˚꩜｡</h2>
-
-    <!-- Search form -->
-    <form class="form-inline mb-4" method="GET" action="/searchResource">
-      <input type="text" name="name" class="form-control mr-2" placeholder="Search by title" value="<%= nameQuery %>">
-      <button class="btn btn-outline-brown">Search</button>
-    </form>
-
-    <!-- Add new resource -->
-    <form action="/addResource" method="POST" class="mb-5">
-      <div class="form-row">
-        <div class="col-md-2"><input type="text" name="subject_id" class="form-control" placeholder="Subject ID" required></div>
-        <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title" required></div>
-        <div class="col-md-2">
-          <select name="type" class="form-control" required>
-            <option value="">Type</option>
-            <option value="video">Video</option>
-            <option value="article">Article</option>
-            <option value="document">Document</option>
-            <option value="quiz">Quiz</option>
-            <option value="case_study">Case Study</option>
-          </select>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard" style="font-weight: bold;">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/timetable">Timetable</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resources">Study Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/subjects">Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/study_groups">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/exams">Exam Schedules</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <!-- Admin button would go here if user.role === 'admin' -->
+                <a href="/logout" class="btn logout-btn"
+                    style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">Logout</a>
+            </div>
         </div>
-        <div class="col-md-3"><input type="url" name="url" class="form-control" placeholder="Resource URL" required></div>
-        <div class="col-md-2"><button class="btn btn-success btn-block">Add</button></div>
-      </div>
-    </form>
+    </nav>
+    </head>
 
-    <!-- Resource table -->
-    <% if (resources.length > 0) { %>
-      <table class="table table-bordered text-center">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Subject ID</th>
-            <th>Type</th>
-            <th>Created At</th>
-            <th>Details</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% resources.forEach(r => { %>
-            <tr>
-              <td><%= r.title %></td>
-              <td><%= r.subject_id %></td>
-              <td><%= r.type %></td>
-              <td><%= (r.created_at instanceof Date ? r.created_at : new Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
+    <body>
+        <div class="container mt-5">
+            <h2 class="mb-4">🔍︎ Study Resources ⋆˚꩜｡</h2>
+
+            <!-- Search form -->
+            <form class="form-inline mb-4" method="GET" action="/searchResource">
+                <input type="text" name="name" class="form-control mr-2" placeholder="Search by title"
+                    value="<%= nameQuery %>">
+                <button class="btn btn-outline-brown">Search</button>
+            </form>
+
+            <!-- Add new resource -->
+            <form action="/addResource" method="POST" class="mb-5">
+                <div class="form-row">
+                    <div class="col-md-2"><input type="text" name="subject_id" class="form-control"
+                            placeholder="Subject ID" required></div>
+                    <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title"
+                            required></div>
+                    <div class="col-md-2">
+                        <select name="type" class="form-control" required>
+                            <option value="">Type</option>
+                            <option value="video">Video</option>
+                            <option value="article">Article</option>
+                            <option value="document">Document</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="case_study">Case Study</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3"><input type="url" name="url" class="form-control" placeholder="Resource URL"
+                            required></div>
+                    <div class="col-md-2"><button class="btn btn-success btn-block">Add</button></div>
+                </div>
+            </form>
+
+            <!-- Resource table -->
+            <% if (resources.length> 0) { %>
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Subject ID</th>
+                            <th>Type</th>
+                            <th>Created At</th>
+                            <th>Details</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% resources.forEach(r=> { %>
+                            <tr>
+                                <td>
+                                    <%= r.title %>
+                                </td>
+                                <td>
+                                    <%= r.subject_id %>
+                                </td>
+                                <td>
+                                    <%= r.type %>
+                                </td>
+                                <td>
+                                    <%= (r.created_at instanceof Date ? r.created_at : new
+                                        Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
               <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
               <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a></td>
               <td>
                 <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
-                  <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this resource?')">Delete</button>
-                </form>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    <% } else { %>
-      <div class="alert alert-warning">No resources found.</div>
-    <% } %>
-  </div>
-</body>
+                  <button class="btn btn-sm btn-danger" onclick="return confirm(' Delete this resource?')">
+                                        Delete</button>
+                                        </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                    <div class="alert alert-warning">No resources found.</div>
+                    <% } %>
+        </div>
+    </body>
+
 </html>
