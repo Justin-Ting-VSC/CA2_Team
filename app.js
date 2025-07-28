@@ -449,11 +449,6 @@ app.post('/timetable/delete/:id', checkAuthenticated, (req, res) => {
     });
 });
 
-//shem resources
-app.get('/resources', checkAuthenticated, (req, res) => {
-    res.render('resources', { user: req.session.user });
-});
-
 // RESOURCES ROUTE (shem)
 // resources link (GET)
 app.get('/resources', (req, res) => {
