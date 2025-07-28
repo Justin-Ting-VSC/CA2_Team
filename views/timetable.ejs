@@ -54,7 +54,6 @@
     </style>
 </head>
 <body>
-    <!--new-->
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -98,10 +97,10 @@
             </div>
         </div>
     </nav>
-    </div>
+</div>
 
     <div class="container">
-        <h1 class="mb-4">📅 My Study Timetable</h1>
+        <h1 class="mb-4"> My Study Timetable</h1>
 
         <!-- Flash Messages -->
         <% if (typeof messages !== 'undefined') { %>
@@ -122,7 +121,7 @@
         <!-- SEARCH SECTION - Your missing search button! -->
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">🔍 Search Timetable</h5>
+                <h5 class="mb-0"> Search Timetable</h5>
             </div>
             <div class="card-body">
                 <form id="searchForm" class="mb-3">
@@ -161,7 +160,7 @@
         <!-- Add New Entry Form -->
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">➕ Add New Timetable Entry</h5>
+                <h5 class="mb-0"> Add New Timetable Entry</h5>
             </div>
             <div class="card-body">
                 <form action="/timetable/add" method="POST">
@@ -203,17 +202,17 @@
         <!-- Timetable Entries -->
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">📋 Your Timetable</h5>
+                <h5 class="mb-0"> Timetable</h5>
             </div>
             <div class="card-body">
                 <!-- Check if entries exist and handle errors -->
                 <% if (typeof entries === 'undefined') { %>
                     <div class="alert alert-warning">
-                        <strong>⚠️ Data Loading Error:</strong> Unable to load timetable entries. Please refresh the page.
+                        <strong> Data Loading Error:</strong> Unable to load timetable entries. Please refresh the page.
                     </div>
                 <% } else if (!entries || entries.length === 0) { %>
                     <div class="alert alert-info text-center">
-                        <h5>📝 No Timetable Entries Found</h5>
+                        <h5> No Timetable Entries Found</h5>
                         <p>Get started by adding your first timetable entry above!</p>
                     </div>
                 <% } else { %>
@@ -247,14 +246,14 @@
                                                 <button type="button" class="btn btn-sm btn-outline-secondary" 
                                                         data-bs-toggle="modal" 
                                                         data-bs-target="#editModal<%= timetableEntry.id %>">
-                                                    ✏️ Edit
+                                                    Edit
                                                 </button>
                                                 
                                                 <!-- Delete Button -->
                                                 <a href="/timetable/delete/<%= timetableEntry.id %>" 
                                                    class="btn btn-sm btn-outline-danger"
                                                    onclick="return confirm('Are you sure you want to delete this entry?')">
-                                                    🗑️ Delete
+                                                    Delete
                                                 </a>
                                             </div>
                                         </td>
