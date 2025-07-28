@@ -145,9 +145,37 @@ app.get('/dashboard', checkAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.session.user });
 });
 
-app.get('/admin', checkAuthenticated, checkAdmin, (req, res) => {
-    res.render('admin', { user: req.session.user });
+app.get('/admin', (req, res) => {
+  if (!req.session.user || req.session.role !== 'admin') {
+    return res.status(403).send('Access denied');
+  }
+
+  db.query('SELECT * FROM users', (err, results) => {
+    if (err) {
+      console.error('DB error:', err);
+      return res.status(500).send('Error fetching users');
+    }
+
+    res.render('admin', {
+      user: req.session,   
+      users: results       
+    });
+  });
 });
+
+app.post('/editRole/:id', (req, res) => {
+  const { role } = req.body;
+  const userId = req.params.id;
+
+  db.query('UPDATE users SET role = ? WHERE id = ?', [role, userId], (err) => {
+    if (err) {
+      console.error('Role update error:', err);
+      return res.status(500).send('Error updating role');
+    }
+    res.redirect('/admin');
+  });
+});
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
