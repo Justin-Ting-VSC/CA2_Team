@@ -272,42 +272,33 @@ app.post('/timetable/edit/:id', checkAuthenticated, (req, res) => {
     res.redirect('/timetable');
 });
 
-// Delete Timetable Entry (POST)
-app.post('/timetable/delete/:id', checkAuthenticated, (req, res) => {
-    const timetableId = req.params.id;
-    const userId = req.session.user.id; // Security: ensure user can only delete their own entries
+//delete
+app.post('/subjects/delete/:id', checkAuthenticated, (req, res) => {
+    const subjectId = req.params.id;
     
-    // First check if the entry exists and belongs to the current user
-    const checkSql = 'SELECT * FROM timetable WHERE id = ? AND user_id = ?';
-    db.query(checkSql, [timetableId, userId], (checkError, checkResults) => {
-        if (checkError) {
-            console.error("Error checking timetable entry:", checkError);
-            req.flash('error', 'Error checking timetable entry.');
-            return res.redirect('/timetable');
+    console.log('🔍 POST DELETE REQUEST:', subjectId);
+    
+    const sql = 'DELETE FROM subjects WHERE id = ?';
+    db.query(sql, [subjectId], (error, results) => {
+        if (error) {
+            console.error("❌ Error deleting subject:", error);
+            req.flash('error', 'Error deleting subject: ' + error.message);
+            return res.redirect('/subjects');
         }
         
-        if (checkResults.length === 0) {
-            req.flash('error', 'Timetable entry not found or you do not have permission to delete it.');
-            return res.redirect('/timetable');
-        }
-        
-        // If entry exists and belongs to user, proceed with deletion
-        const deleteSql = 'DELETE FROM timetable WHERE id = ? AND user_id = ?';
-        db.query(deleteSql, [timetableId, userId], (deleteError, deleteResults) => {
-            if (deleteError) {
-                console.error("Error deleting timetable entry:", deleteError);
-                req.flash('error', 'Error deleting timetable entry.');
-                return res.status(500).redirect('/timetable');
-            }
-            
-            if (deleteResults.affectedRows > 1) {
-                req.flash('success', 'Timetable entry deleted successfully!');
-            } else {
-                req.flash('error', 'Failed to delete timetable entry.');
-            }
-            
-            res.redirect('/timetable');
+        console.log('📊 Delete Results:', {
+            affectedRows: results.affectedRows,
+            insertId: results.insertId,
+            warningCount: results.warningCount
         });
+        
+        if (results.affectedRows > 0) {
+            req.flash('success', 'Subject deleted successfully!');
+        } else {
+            req.flash('error', 'Subject not found or already deleted.');
+        }
+        
+        res.redirect('/subjects');
     });
 });
 
