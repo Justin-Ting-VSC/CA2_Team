@@ -146,8 +146,8 @@ app.get('/dashboard', checkAuthenticated, (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-  if (!req.session.user || req.session.role !== 'admin') {
-    return res.status(403).send('Accesss denied');
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.status(403).send('Access denied');
   }
 
   db.query('SELECT * FROM users', (err, results) => {
@@ -157,8 +157,8 @@ app.get('/admin', (req, res) => {
     }
 
     res.render('admin', {
-      user: req.session,   
-      users: results       
+      user: req.session.user,
+      users: results
     });
   });
 });
