@@ -99,7 +99,7 @@
 
     <div class="container">
         <h1 class="mb-4"> 𐙚 ‧₊˚⋅ My Study Timetable ⋅˚₊‧ 𐙚</h1>
-
+        <h2>Welcome, <%= user.username %> (<%= user.role %>)</h2>
         <% if (typeof messages !== 'undefined') { %>
             <% if (messages.success && messages.success.length > 0) { %>
                 <div class="alert alert-success alert-dismissible fade show">
