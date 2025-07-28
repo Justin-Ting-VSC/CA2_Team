@@ -8,53 +8,92 @@
     <link href="/styles.css" rel="stylesheet">
 </head>
 <style>
-        body {
-            font-family: "SF Pro Display", Inter, sans-serif;
-            background-color: #e6dfd0;
-            color: #343a40;
-        }
-        .navbar {
-            background-color: #4B2E2E !important;
-            margin-bottom: 20px;
-            border-radius: 0 0 10px 10px;
-        }
-        .nav-link {
-            color: #F5F5DC !important;
-        }
-        .nav-link:hover {
-            background-color: #5C3A3A !important;
-            color: #FFF !important;
-            text-decoration: underline;
-            border-radius: 5px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #dee2e6;
-            padding: 30px;
-        }
-        h2 {
-            color: #19202f;
-        }
-        .btn-back {
-            margin-top: 20px;
-            color: #19202f;
-            border-color: #19202f;
-        }
-        .btn-back:hover {
-            background-color: #19202f;
-            color: #ffffff;
-        }
-    </style>
-</head>
+    body {
+        font-family: "SF Pro Display", Inter, sans-serif;
+        background-color: #e6dfd0;
+        color: #343a40;
+    }
+    .navbar {
+        background-color: #4B2E2E !important;
+        margin-bottom: 20px;
+        border-radius: 0 0 10px 10px;
+    }
+    .nav-link {
+        color: #F5F5DC !important;
+    }
+    .nav-link:hover {
+        background-color: #5C3A3A !important;
+        color: #FFF !important;
+        text-decoration: underline;
+        border-radius: 5px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border: 1px solid #dee2e6;
+        padding: 30px;
+    }
+    h2 {
+        color: #19202f;
+    }
+    .btn-back {
+        margin-top: 20px;
+        color: #19202f;
+        border-color: #19202f;
+    }
+    .btn-back:hover {
+        background-color: #19202f;
+        color: #ffffff;
+    }
+    .admin-only {
+        position: relative;
+    }
+    .user-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(248, 249, 250, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        z-index: 10;
+    }
+    .user-message {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .role-badge {
+        background-color: #17a2b8;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .role-badge.admin {
+        background-color: #28a745;
+    }
+    .role-badge.user {
+        background-color: #6c757d;
+    }
+</style>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -86,6 +125,11 @@
             </div>
 
             <div class="d-flex align-items-center">
+                <!-- Display user role badge -->
+                <span class="role-badge <%= user.role === 'admin' ? 'admin' : 'user' %>" style="margin-right: 10px;">
+                    <%= user.role === 'admin' ? 'Admin' : 'User' %>
+                </span>
+                
                 <% if (user.role === 'admin') { %>
                     <a href="/admin" class="btn admin-btn" style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
                         Admin Dashboard
@@ -97,12 +141,17 @@
             </div>
         </div>
     </nav>
-</div>
 
     <div class="container">
-        <h1 class="mb-4"> My Study Timetable</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1> 𐙚 ‧₊˚⋅ My Study Timetable ⋅˚₊‧ 𐙚</h1>
+            <% if (user.role !== 'admin') { %>
+                <div class="alert alert-info mb-0 py-2 px-3" style="font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> You are viewing in read-only mode
+                </div>
+            <% } %>
+        </div>
 
-        <!-- Flash Messages -->
         <% if (typeof messages !== 'undefined') { %>
             <% if (messages.success && messages.success.length > 0) { %>
                 <div class="alert alert-success alert-dismissible fade show">
@@ -118,7 +167,7 @@
             <% } %>
         <% } %>
 
-        <!-- SEARCH SECTION - Your missing search button! -->
+        <!-- Search Section - Always visible -->
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0"> Search Timetable</h5>
@@ -128,7 +177,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="searchSubject" 
-                                   placeholder="Search by subject..." onkeyup="searchTimetable()">
+                                    placeholder="Search by subject..." onkeyup="searchTimetable()">
                         </div>
                         <div class="col-md-5">
                             <select class="form-control" id="searchDay" onchange="searchTimetable()">
@@ -157,55 +206,114 @@
             </div>
         </div>
 
-        <!-- Add New Entry Form -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"> Add New Timetable Entry</h5>
+        <!-- Add New Entry Section - Admin Only -->
+        <% if (user.role === 'admin') { %>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"> Add New Timetable Entry</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/timetable/add" method="POST">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Subject</label>
+                                    <select class="form-control" id="subject" name="subject_type" onchange="toggleCustomSubject()" required>
+                                        <option value="">Select Subject</option>
+                                        <option value="Software Development Process">Software Development Process (C206)</option>
+                                        <option value="Business Intelligence">Business Intelligence (C355)</option>
+                                        <option value="Software Application Development">Software Application Development (C237)</option>
+                                        <option value="custom">Add New Subject...</option>
+                                    </select>
+                                    
+                                    <!-- Hidden input for the actual subject name that gets sent to server -->
+                                    <input type="hidden" id="finalSubject" name="subject">
+                                    
+                                    <!-- Custom subject input (shown when "Add New Subject" is selected) -->
+                                    <div class="custom-subject-input mt-2" id="customSubjectDiv" style="display: none;">
+                                        <input type="text" class="form-control mb-2" id="customSubjectName" 
+                                               placeholder="Enter subject name" onchange="updateFinalSubject()">
+                                        <input type="text" class="form-control" id="customSubjectCode" 
+                                               placeholder="Enter subject code (optional)" onchange="updateFinalSubject()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="day" class="form-label">Day</label>
+                                    <select class="form-control" id="day" name="day" required>  
+                                        <option value="">Select Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="time_slot" class="form-label">Time Slot</label>
+                                    <input type="text" class="form-control" id="time_slot" name="time_slot" 
+                                            placeholder="e.g., 9:00 AM - 10:00 AM" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Entry</button>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form action="/timetable/add" method="POST">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="subject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="subject" name="subject" required>
+        <% } else { %>
+            <!-- Placeholder for regular users -->
+            <div class="card mb-4 admin-only">
+                <div class="card-header">
+                    <h5 class="mb-0"> Add New Timetable Entry</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Subject</label>
+                                    <select class="form-control" disabled>
+                                        <option>Select Subject</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Day</label>
+                                    <select class="form-control" disabled>
+                                        <option>Select Day</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Time Slot</label>
+                                    <input type="text" class="form-control" disabled placeholder="e.g., 9:00 AM - 10:00 AM">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="day" class="form-label">Day</label>
-                                <select class="form-control" id="day" name="day" required>
-                                    <option value="">Select Day</option>
-                                    <option value="Monday">Monday</option>
-                                    <option value="Tuesday">Tuesday</option>
-                                    <option value="Wednesday">Wednesday</option>
-                                    <option value="Thursday">Thursday</option>
-                                    <option value="Friday">Friday</option>
-                                    <option value="Saturday">Saturday</option>
-                                    <option value="Sunday">Sunday</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="time_slot" class="form-label">Time Slot</label>
-                                <input type="text" class="form-control" id="time_slot" name="time_slot" 
-                                       placeholder="e.g., 9:00 AM - 10:00 AM" required>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-primary" disabled>Add Entry</button>
+                    </form>
+                </div>
+                <div class="user-overlay">
+                    <div class="user-message">
+                        <i class="fas fa-lock"></i> Admin access required to add new entries
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Entry</button>
-                </form>
+                </div>
             </div>
-        </div>
+        <% } %>
 
-        <!-- Timetable Entries -->
-        <div class="card">
+        <!-- Timetable Display -->
+        <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0"> Timetable</h5>
             </div>
             <div class="card-body">
-                <!-- Check if entries exist and handle errors -->
                 <% if (typeof entries === 'undefined') { %>
                     <div class="alert alert-warning">
                         <strong> Data Loading Error:</strong> Unable to load timetable entries. Please refresh the page.
@@ -213,7 +321,11 @@
                 <% } else if (!entries || entries.length === 0) { %>
                     <div class="alert alert-info text-center">
                         <h5> No Timetable Entries Found</h5>
-                        <p>Get started by adding your first timetable entry above!</p>
+                        <% if (user.role === 'admin') { %>
+                            <p>Get started by adding your first timetable entry above!</p>
+                        <% } else { %>
+                            <p>No timetable entries have been created yet.</p>
+                        <% } %>
                     </div>
                 <% } else { %>
                     <div class="table-responsive">
@@ -223,7 +335,9 @@
                                     <th>Subject</th>
                                     <th>Day</th>
                                     <th>Time Slot</th>
-                                    <th>Actions</th>
+                                    <% if (user.role === 'admin') { %>
+                                        <th>Actions</th>
+                                    <% } %>
                                 </tr>
                             </thead>
                             <tbody id="timetableBody">
@@ -240,74 +354,92 @@
                                         <td>
                                             <%= timetableEntry.time_slot || 'No time set' %>
                                         </td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <!-- Edit Button (triggers modal) -->
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#editModal<%= timetableEntry.id %>">
-                                                    Edit
-                                                </button>
-                                                
-                                                <!-- Delete Button -->
-                                                <a href="/timetable/delete/<%= timetableEntry.id %>" 
-                                                   class="btn btn-sm btn-outline-danger"
-                                                   onclick="return confirm('Are you sure you want to delete this entry?')">
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </td>
+                                        <% if (user.role === 'admin') { %>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editModal<%= timetableEntry.id %>">
+                                                        Edit
+                                                    </button>
+                                                    
+                                                    <a href="/timetable/delete/<%= timetableEntry.id %>" 
+                                                       class="btn btn-sm btn-outline-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this entry?')">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        <% } %>
                                     </tr>
 
-                                    <!-- Edit Modal for this entry -->
-                                    <div class="modal fade" id="editModal<%= timetableEntry.id %>" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Timetable Entry</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    <!-- Edit Modal - Only for Admin -->
+                                    <% if (user.role === 'admin') { %>
+                                        <div class="modal fade" id="editModal<%= timetableEntry.id %>" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Timetable Entry</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <form action="/timetable/edit/<%= timetableEntry.id %>" method="POST">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="editSubject<%= timetableEntry.id %>" class="form-label">Subject</label>
+                                                                <select class="form-control" 
+                                                                        id="editSubject<%= timetableEntry.id %>" 
+                                                                        name="subject" required>
+                                                                    <option value="">Select Subject</option>
+                                                                    <% 
+                                                                        if (typeof subjects !== 'undefined' && subjects.length > 0) {
+                                                                            subjects.forEach(function(s) { 
+                                                                    %>
+                                                                                <option value="<%= s.name %>" 
+                                                                                    <%= (timetableEntry.subject === s.name || timetableEntry.subject_name === s.name) ? 'selected' : '' %>>
+                                                                                    <%= s.name %> (<%= s.code %>)
+                                                                                </option>
+                                                                    <% 
+                                                                            });
+                                                                        } else { 
+                                                                    %>
+                                                                            <option value="Software Development Process" <%= (timetableEntry.subject === 'Software Development Process' || timetableEntry.subject_name === 'Software Development Process') ? 'selected' : '' %>>Software Development Process</option>
+                                                                            <option value="Business Intelligence" <%= (timetableEntry.subject === 'Business Intelligence' || timetableEntry.subject_name === 'Business Intelligence') ? 'selected' : '' %>>Business Intelligence</option>
+                                                                            <option value="Software Application Development" <%= (timetableEntry.subject === 'Software Application Development' || timetableEntry.subject_name === 'Software Application Development') ? 'selected' : '' %>>Software Application Development</option>
+                                                                    <% } %>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="editDay<%= timetableEntry.id %>" class="form-label">Day</label>
+                                                                <select class="form-control" 
+                                                                        id="editDay<%= timetableEntry.id %>" 
+                                                                        name="day" required>
+                                                                    <option value="Monday" <%= timetableEntry.day === 'Monday' ? 'selected' : '' %>>Monday</option>
+                                                                    <option value="Tuesday" <%= timetableEntry.day === 'Tuesday' ? 'selected' : '' %>>Tuesday</option>
+                                                                    <option value="Wednesday" <%= timetableEntry.day === 'Wednesday' ? 'selected' : '' %>>Wednesday</option>
+                                                                    <option value="Thursday" <%= timetableEntry.day === 'Thursday' ? 'selected' : '' %>>Thursday</option>
+                                                                    <option value="Friday" <%= timetableEntry.day === 'Friday' ? 'selected' : '' %>>Friday</option>
+                                                                    <option value="Saturday" <%= timetableEntry.day === 'Saturday' ? 'selected' : '' %>>Saturday</option>
+                                                                    <option value="Sunday" <%= timetableEntry.day === 'Sunday' ? 'selected' : '' %>>Sunday</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="editTimeSlot<%= timetableEntry.id %>" class="form-label">Time Slot</label>
+                                                                <input type="text" class="form-control" 
+                                                                        id="editTimeSlot<%= timetableEntry.id %>" 
+                                                                        name="time_slot" 
+                                                                        value="<%= timetableEntry.time_slot || '' %>" 
+                                                                        required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <form action="/timetable/edit/<%= timetableEntry.id %>" method="POST">
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label for="editSubject<%= timetableEntry.id %>" class="form-label">Subject</label>
-                                                            <input type="text" class="form-control" 
-                                                                   id="editSubject<%= timetableEntry.id %>" 
-                                                                   name="subject" 
-                                                                   value="<%= timetableEntry.subject || timetableEntry.subject_name || '' %>" 
-                                                                   required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="editDay<%= timetableEntry.id %>" class="form-label">Day</label>
-                                                            <select class="form-control" 
-                                                                    id="editDay<%= timetableEntry.id %>" 
-                                                                    name="day" required>
-                                                                <option value="Monday" <%= timetableEntry.day === 'Monday' ? 'selected' : '' %>>Monday</option>
-                                                                <option value="Tuesday" <%= timetableEntry.day === 'Tuesday' ? 'selected' : '' %>>Tuesday</option>
-                                                                <option value="Wednesday" <%= timetableEntry.day === 'Wednesday' ? 'selected' : '' %>>Wednesday</option>
-                                                                <option value="Thursday" <%= timetableEntry.day === 'Thursday' ? 'selected' : '' %>>Thursday</option>
-                                                                <option value="Friday" <%= timetableEntry.day === 'Friday' ? 'selected' : '' %>>Friday</option>
-                                                                <option value="Saturday" <%= timetableEntry.day === 'Saturday' ? 'selected' : '' %>>Saturday</option>
-                                                                <option value="Sunday" <%= timetableEntry.day === 'Sunday' ? 'selected' : '' %>>Sunday</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="editTimeSlot<%= timetableEntry.id %>" class="form-label">Time Slot</label>
-                                                            <input type="text" class="form-control" 
-                                                                   id="editTimeSlot<%= timetableEntry.id %>" 
-                                                                   name="time_slot" 
-                                                                   value="<%= timetableEntry.time_slot || '' %>" 
-                                                                   required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    <% } %>
                                 <% }); %>
                             </tbody>
                         </table>
@@ -315,12 +447,63 @@
                 <% } %>
             </div>
         </div>
+
+        <% if (typeof subject !== 'undefined' && subject) { %>
+            <div class="card mt-4">
+                <h2>Subject Details</h2>
+                <p><strong>Name:</strong> <%= subject.name %></p>
+                <p><strong>Code:</strong> <%= subject.code %></p>
+
+                <a href="/subjects" class="btn btn-outline-secondary btn-back">Back to Subjects</a>
+            </div>
+        <% } %>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- SEARCH FUNCTIONALITY - Your missing search feature! -->
     <script>
+        // Function to toggle custom subject input (Admin only)
+        function toggleCustomSubject() {
+            if (user.role === 'admin') {
+                const subjectSelect = document.getElementById('subject');
+                const customDiv = document.getElementById('customSubjectDiv');
+                const customNameInput = document.getElementById('customSubjectName');
+                const customCodeInput = document.getElementById('customSubjectCode');
+                
+                if (subjectSelect && subjectSelect.value === 'custom') {
+                    customDiv.style.display = 'block';
+                    customNameInput.required = true;
+                    document.getElementById('finalSubject').value = '';
+                } else {
+                    customDiv.style.display = 'none';
+                    customNameInput.required = false;
+                    customNameInput.value = '';
+                    customCodeInput.value = '';
+                    if (subjectSelect) {
+                        document.getElementById('finalSubject').value = subjectSelect.value;
+                    }
+                }
+            }
+        }
+        
+        // Function to update the final subject value when custom inputs change (Admin only)
+        function updateFinalSubject() {
+            if (user.role === 'admin') {
+                const subjectSelect = document.getElementById('subject');
+                if (subjectSelect && subjectSelect.value === 'custom') {
+                    const customName = document.getElementById('customSubjectName').value;
+                    const customCode = document.getElementById('customSubjectCode').value;
+                    
+                    let finalValue = customName;
+                    if (customCode) {
+                        finalValue += ' (' + customCode + ')';
+                    }
+                    
+                    document.getElementById('finalSubject').value = finalValue;
+                }
+            }
+        }
+        
         // Search function that filters by subject or day
         function searchTimetable() {
             const searchSubject = document.getElementById('searchSubject').value.toLowerCase();
@@ -367,54 +550,72 @@
                 row.style.display = '';
             });
         }
-    </script>
-    
-    <!-- Error Prevention Script -->
-    <script>
+        
+        // Initialize the form (Admin only)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (user.role === 'admin') {
+                // Set initial state for custom subject
+                toggleCustomSubject();
+                
+                // Form validation
+                const forms = document.querySelectorAll('form[action*="/timetable"]');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        const subjectSelect = document.getElementById('subject');
+                        const finalSubject = document.getElementById('finalSubject');
+                        const customName = document.getElementById('customSubjectName');
+                        
+                        // Validate custom subject if selected
+                        if (subjectSelect && subjectSelect.value === 'custom') {
+                            if (!customName.value.trim()) {
+                                e.preventDefault();
+                                alert('Please enter a subject name.');
+                                customName.focus();
+                                return;
+                            }
+                            updateFinalSubject();
+                        }
+                        
+                        // General validation for required fields
+                        const inputs = form.querySelectorAll('input[required], select[required]');
+                        let valid = true;
+                        
+                        inputs.forEach(input => {
+                            if (!input.value.trim()) {
+                                valid = false;
+                                input.classList.add('is-invalid');
+                            } else {
+                                input.classList.remove('is-invalid');
+                            }
+                        });
+                        
+                        if (!valid) {
+                            e.preventDefault();
+                            alert('Please fill in all required fields.');
+                        }
+                    });
+                });
+            }
+
+            // Auto-hide alerts after 5 seconds
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    if (alert.classList.contains('show')) {
+                        alert.classList.remove('show');
+                    }
+                });
+            }, 5000);
+        });
+
         // Prevent form resubmission on page refresh
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
-
-        // Auto-hide alerts after 5 seconds
-        setTimeout(function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                if (alert.classList.contains('show')) {
-                    alert.classList.remove('show');
-                }
-            });
-        }, 5000);
-
-        // Form validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const inputs = form.querySelectorAll('input[required], select[required]');
-                    let valid = true;
-                    
-                    inputs.forEach(input => {
-                        if (!input.value.trim()) {
-                            valid = false;
-                            input.classList.add('is-invalid');
-                        } else {
-                            input.classList.remove('is-invalid');
-                        }
-                    });
-                    
-                    if (!valid) {
-                        e.preventDefault();
-                        alert('Please fill in all required fields.');
-                    }
-                });
-            });
-        });
     </script>
 
     <footer class="footer">
         <p>&copy; SG Study Buddy & Co.</p>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
