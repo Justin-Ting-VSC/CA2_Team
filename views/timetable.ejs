@@ -57,7 +57,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><b>📚 Study Buddy</b></a>
+            <a class="navbar-brand" href="/"><b> Study Buddy</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -295,38 +295,6 @@
                                 <% }); %>
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- Summary Statistics -->
-                    <div class="row mt-4">
-                        <div class="col-md-4">
-                            <div class="card text-center bg-light">
-                                <div class="card-body">
-                                    <h5 class="card-title">📊 Total Entries</h5>
-                                    <h3 class="text-primary"><%= entries.length %></h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card text-center bg-light">
-                                <div class="card-body">
-                                    <h5 class="card-title">📚 Unique Subjects</h5>
-                                    <h3 class="text-success">
-                                        <%= [...new Set(entries.map(e => e.subject || e.subject_name))].filter(Boolean).length %>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card text-center bg-light">
-                                <div class="card-body">
-                                    <h5 class="card-title">📅 This Week</h5>
-                                    <h3 class="text-info">
-                                        <%= entries.filter(e => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].includes(e.day)).length %>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 <% } %>
             </div>
