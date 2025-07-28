@@ -454,6 +454,134 @@ app.get('/resources', checkAuthenticated, (req, res) => {
     res.render('resources', { user: req.session.user });
 });
 
+// RESOURCES ROUTE (shem)
+// resources link (GET)
+app.get('/resources', (req, res) => {
+  const sql = 'SELECT * FROM resources ORDER BY created_at DESC;'
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('DB error (list):', err);
+      return res.status(500).send('Database error');
+    }
+    res.render('resources', {
+      mode: 'list',
+      resources: results,
+      selected: null,
+      nameQuery: '',
+      subjectQuery: ''
+    });
+  });
+});
+
+// search resources (GET)
+app.get('/searchResource', (req, res) => {
+  const { name = '' } = req.query;
+  const sql = `
+    SELECT * FROM resources
+    WHERE title LIKE ?
+    ORDER BY created_at DESC
+  `;
+  db.query(sql, [`%${name}%`], (err, results) => {
+    if (err) {
+      console.error('DB error (search):', err);
+      return res.status(500).send('Database error');
+    }
+    res.render('resources', {
+      mode: 'list',
+      resources: results,
+      selected: null,
+      nameQuery: name,
+      subjectQuery: ''  
+    });
+  });
+});
+
+// shem View resources (GET)
+app.get('/viewResource/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'SELECT * FROM resources WHERE id = ?';
+
+  db.query(sql, [id], (err, rows) => {
+    if (err) {
+      console.error('DB error (detail):', err);
+      return res.status(500).send('Database error');
+    }
+    if (!rows.length) return res.status(404).send('Resource not found');
+
+    res.render('viewResource', {
+      selected: rows[0]
+    });
+  });
+});
+
+// shem edit resources (GET)
+app.get('/editResource/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'SELECT * FROM resources WHERE id = ?';
+
+  db.query(sql, [id], (err, rows) => {
+    if (err) {
+      console.error('DB error (edit GET):', err);
+      return res.status(500).send('Database error');
+    }
+    if (!rows.length) return res.status(404).send('Resource not found');
+
+    res.render('editResource', {
+      selected: rows[0]
+    });
+  });
+});
+
+// shem add resource (POST)
+app.post('/addResource', (req, res) => {
+  const { subject_id, title, type, url } = req.body;
+  const sql = `
+    INSERT INTO resources (subject_id, title, type, url, created_at)
+    VALUES (?, ?, ?, ?, NOW())
+  `;
+
+  db.query(sql, [subject_id, title, type, url], (err) => {
+    if (err) {
+      console.error('Insert error:', err);
+      return res.status(500).send('Error adding resource.');
+    }
+    res.redirect('/resources');
+  });
+});
+
+// shem edit resource (POST)
+app.post('/editResource/:id', (req, res) => {
+  const id = req.params.id;
+  const { subject_id, title, type, url } = req.body;
+
+  const sql = `
+    UPDATE resources
+    SET subject_id = ?, title = ?, type = ?, url = ?
+    WHERE id = ?
+  `;
+  db.query(sql, [subject_id, title, type, url, id], (err) => {
+    if (err) {
+      console.error('Update error:', err);
+      return res.status(500).send('Error updating resource.');
+    }
+    res.redirect('/resources');
+  });
+});
+
+// shem delete resource (POST)
+app.post('/deleteResource/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM resources WHERE id = ?';
+  db.query(sql, [id], (err) => {
+    if (err) {
+      console.error('Delete error:', err);
+      return res.status(500).send('Error deleting resource.');
+    }
+    res.redirect('/resources');
+  });
+});
+
+
 //justin study groups go to study_groups.ejs
 app.get('/study_groups', checkAuthenticated, (req, res) => {
 
