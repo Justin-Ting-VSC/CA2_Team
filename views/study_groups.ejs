@@ -26,8 +26,10 @@
                         <td><%= study_groups[i].subject_id %></td>
                         <td><%= study_groups[i].members %></td>
                         <td><%= study_groups[i].created_at %></td>
-                        <td><a href="/study_groups_edit/<%= study_groups[i].id %>">Edit</a></td>
-                        <td><a href="/study_groups_delete/<%= study_groups[i].id%>" onclick="return confirm('Are you sure you want to delete this?')">Delete</a></td>
+                        <% if (user.role === 'admin') { %>
+                            <td><a href="/study_groups_edit/<%= study_groups[i].id %>">Edit</a></td>
+                            <td><a href="/study_groups_delete/<%= study_groups[i].id%>" onclick="return confirm('Are you sure you want to delete this?')">Delete</a></td>
+                        <% } %>
                     </tr>
                 <% } %>
             </tbody>
