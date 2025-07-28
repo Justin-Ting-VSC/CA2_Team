@@ -425,7 +425,7 @@ app.get('/timetable/delete/:id', checkAuthenticated, (req, res) => {
 
 // RESOURCES ROUTE (shem)
 // resources link (GET)
-app.get('/resources', (req, res) => {
+app.get('/resources', checkAuthenticated, (req, res) => {
   const sql = 'SELECT * FROM resources ORDER BY created_at DESC;'
   db.query(sql, (err, results) => {
     if (err) {
@@ -443,7 +443,7 @@ app.get('/resources', (req, res) => {
 });
 
 // search resources (GET)
-app.get('/searchResource', (req, res) => {
+app.get('/searchResource', checkAuthenticated, (req, res) => {
   const { name = '' } = req.query;
   const sql = `
     SELECT * FROM resources
@@ -466,7 +466,7 @@ app.get('/searchResource', (req, res) => {
 });
 
 // shem View resources (GET)
-app.get('/viewResource/:id', (req, res) => {
+app.get('/viewResource/:id', checkAuthenticated, (req, res) => {
   const id = req.params.id;
   const sql = 'SELECT * FROM resources WHERE id = ?';
 
@@ -484,7 +484,7 @@ app.get('/viewResource/:id', (req, res) => {
 });
 
 // shem edit resources (GET)
-app.get('/editResource/:id', (req, res) => {
+app.get('/editResource/:id', checkAuthenticated, (req, res) => {
   const id = req.params.id;
   const sql = 'SELECT * FROM resources WHERE id = ?';
 
@@ -502,7 +502,7 @@ app.get('/editResource/:id', (req, res) => {
 });
 
 // shem add resource (POST)
-app.post('/addResource', (req, res) => {
+app.post('/addResource', checkAuthenticated, (req, res) => {
   const { subject_id, title, type, url } = req.body;
   const sql = `
     INSERT INTO resources (subject_id, title, type, url, created_at)
@@ -519,7 +519,7 @@ app.post('/addResource', (req, res) => {
 });
 
 // shem edit resource (POST)
-app.post('/editResource/:id', (req, res) => {
+app.post('/editResource/:id', checkAuthenticated, (req, res) => {
   const id = req.params.id;
   const { subject_id, title, type, url } = req.body;
 
@@ -538,7 +538,7 @@ app.post('/editResource/:id', (req, res) => {
 });
 
 // shem delete resource (POST)
-app.post('/deleteResource/:id', (req, res) => {
+app.post('/deleteResource/:id', checkAuthenticated, (req, res) => {
   const id = req.params.id;
   const sql = 'DELETE FROM resources WHERE id = ?';
   db.query(sql, [id], (err) => {
