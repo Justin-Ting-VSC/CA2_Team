@@ -117,7 +117,9 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -145,14 +147,16 @@
             </div>
 
             <div class="d-flex align-items-center">
-                <% if (user.role === 'admin') { %>
-                    <a href="/admin" class="btn admin-btn" style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+                <% if (user.role==='admin' ) { %>
+                    <a href="/admin" class="btn admin-btn"
+                        style="background-color: #D9A404; color: #2C1810; margin-right: 0.5rem; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
                         Admin Dashboard
                     </a>
-                <% } %>
-                <a href="/logout" class="btn logout-btn" style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
-                    Logout
-                </a>
+                    <% } %>
+                        <a href="/logout" class="btn logout-btn"
+                            style="background-color: #B83A3A; color: #F5F5DC; font-weight: bold; border: none; padding: 0.5rem 1rem; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease;">
+                            Logout
+                        </a>
             </div>
         </div>
     </nav>
@@ -170,73 +174,83 @@
             </form>
 
             <!-- add resource -->
-            <form action="/addResource" method="POST" class="mb-5">
-                <div class="form-row">
-                    <div class="col-md-2"><input type="text" name="subject_id" class="form-control"
-                            placeholder="Subject ID" required></div>
-                    <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title"
-                            required></div>
-                    <div class="col-md-2">
-                        <select name="type" class="form-control" required>
-                            <option value="">Type</option>
-                            <option value="video">Video</option>
-                            <option value="article">Article</option>
-                            <option value="document">Document</option>
-                            <option value="quiz">Quiz</option>
-                            <option value="case_study">Case Study</option>
-                        </select>
+            <% if (user.role==='admin' ) { %>
+                <form action="/addResource" method="POST" class="mb-5">
+                    <div class="form-row">
+                        <div class="col-md-2"><input type="text" name="subject_id" class="form-control"
+                                placeholder="Subject ID" required></div>
+                        <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title"
+                                required></div>
+                        <div class="col-md-2">
+                            <select name="type" class="form-control" required>
+                                <option value="">Type</option>
+                                <option value="video">Video</option>
+                                <option value="article">Article</option>
+                                <option value="document">Document</option>
+                                <option value="quiz">Quiz</option>
+                                <option value="case_study">Case Study</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3"><input type="url" name="url" class="form-control"
+                                placeholder="Resource URL" required></div>
+                        <div class="col-md-2"><button class="btn btn-success btn-block">Add</button></div>
                     </div>
-                    <div class="col-md-3"><input type="url" name="url" class="form-control" placeholder="Resource URL"
-                            required></div>
-                    <div class="col-md-2"><button class="btn btn-success btn-block">Add</button></div>
-                </div>
-            </form>
+                </form>
+                <% } %>
 
-            <!-- resource table -->
-            <% if (resources.length> 0) { %>
-                <table class="table table-bordered text-center" style="border-radius:15px">
-                
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Subject ID</th>
-                            <th>Type</th>
-                            <th>Created At</th>
-                            <th>Details</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% resources.forEach(r=> { %>
-                            <tr>
-                                <td>
-                                    <%= r.title %>
-                                </td>
-                                <td>
-                                    <%= r.subject_id %>
-                                </td>
-                                <td>
-                                    <%= r.type %>
-                                </td>
-                                <td>
-                                    <%= (r.created_at instanceof Date ? r.created_at : new
-                                        Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
-              <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
-              <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a></td>
-              <td>
-                <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
-                  <button class="btn btn-sm btn-danger" onclick="return confirm(' Delete this resource?')">
-                                        Delete</button>
-                                        </form>
-                                </td>
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
-                <% } else { %>
-                    <div class="alert alert-warning">No resources found.</div>
-                    <% } %>
+                    <!-- resource table -->
+                    <% if (resources.length> 0) { %>
+                        <table class="table table-bordered text-center" style="border-radius:15px">
+
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Subject ID</th>
+                                    <th>Type</th>
+                                    <th>Created At</th>
+                                    <th>Details</th>
+                                    <% if (user.role==='admin' ) { %>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                        <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% resources.forEach(r=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= r.title %>
+                                        </td>
+                                        <td>
+                                            <%= r.subject_id %>
+                                        </td>
+                                        <td>
+                                            <%= r.type %>
+                                        </td>
+                                        <td>
+                                            <%= (r.created_at instanceof Date ? r.created_at : new
+                                                Date(r.created_at)).toISOString().slice(0,19).replace('T',' ') %></td>
+                                        <td><a href="/viewResource/<%= r.id %>" class="btn btn-sm btn-outline-brown">View</a></td>
+                                        <% if (user.role === ' admin') { %>
+                                        <td><a href="/editResource/<%= r.id %>" class="btn btn-sm btn-warning">Edit</a>
+                                        </td>
+                                        <td>
+
+                                            <form action="/deleteResource/<%= r.id %>" method="POST" class="d-inline">
+
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="return confirm(' Delete this resource?')">
+                                                    Delete</button>
+                                            </form>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                            <div class="alert alert-warning">No resources found.</div>
+                            <% } %>
         </div>
     </body>
 
