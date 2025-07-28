@@ -1,134 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <title>Study_groups_edit</title>
-        <style>
-        body {
-            font-family: "SF Pro Display Bold", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: #e6dfd0;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background-color: #4B2E2E !important;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
-        
-        .nav-link {
-            transition: background 0.2s, text-decoration 0.2s;
-            margin-right: 0.5rem;
-            color: #F5F5DC !important;
-        }
-        
-        .nav-link:hover {
-            background-color: #5C3A3A !important;
-            color: #FFF !important;
-            text-decoration: underline;
-            border-radius: 5px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .btn {
-            border-radius: 8px;
-        }
-        
-        .form-control {
-            border-radius: 8px;
-            background-color: #ffffff;
-            color: #343a40;
-            border-color: #ced4da;
-        }
-        
-        .card {
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #dee2e6;
-            margin-bottom: 20px;
-        }
-        
-        h1, h2, h3, h4 {
-            color: #19202f;
-            margin-bottom: 30px;
-        }
-        
-        .btn-outline-secondary {
-            color: #19202f;
-            border-color: #19202f;
-        }
-        
-        .btn-outline-secondary:hover {
-            background-color: #19202f;
-            color: #ffffff;
-        }
-        
-        /* Button hover effects */
-        .admin-btn:hover {
-            background-color: #E6B614 !important;
-            color: #2C1810 !important;
-            text-decoration: none !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .logout-btn:hover {
-            background-color: #C94A4A !important;
-            color: #F5F5DC !important;
-            text-decoration: none !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .welcome-text {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Study Groups</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    </head>
+  <style>
+    body {
+      font-family: "SF Pro Display Bold", "SF Pro Display", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #e6dfd0;
+      color: #343a40;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #4B2E2E;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: #F5F5DC !important;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: #5C3A3A !important;
+      color: #FFF !important;
+      text-decoration: underline;
+      border-radius: 5px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #19202f;
+      margin-bottom: 30px;
+    }
+
+    .btn-yellow {
+      background-color: #E6B614;
+      color: #2C1810;
+      border: none;
+      padding: 6px 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .btn-yellow:hover {
+      background-color: #d4af0a;
+      color: #1e1208;
+      text-decoration: none;
+    }
+
+    .btn-outline-secondary:hover.admin-btn {
+      background-color: #E6B614 !important;
+      color: #2C1810 !important;
+    }
+
+    .btn-outline-secondary:hover.logout-btn {
+      background-color: #C94A4A !important;
+      color: #F5F5DC !important;
+    }
+
+    /* Table styles */
+    .table-header,
+    .table-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-header {
+      font-weight: bold;
+      background-color: #f8f9fa;
+      color: #19202f;
+    }
+
+    .table-row {
+      background-color: #fff;
+      align-items: center;
+    }
+
+    .table-row:nth-child(odd) {
+      background-color: #f2f2f2;
+    }
+
+    .table-cell {
+      flex-basis: 20%;
+      text-align: center;
+    }
+
+    .table-cell.name {
+      flex-basis: 25%;
+      text-align: left;
+    }
+
+    .table-cell.actions {
+      flex-basis: 25%;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .table-cell a {
+      color: #4B2E2E;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .table-cell a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .table-header,
+      .table-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .table-cell {
+        flex-basis: 100%;
+        text-align: left;
+        padding: 4px 0;
+      }
+      .table-cell.actions {
+        flex-basis: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
 <body>
 
-    <div class="container">
-        <br>
-        <div class="text-center"><h2>Edit details</h2></div>
-        <br>
-        <div class="text-center">
-          <% if (study_groups) { %> 
-            <form action="/study_groups_edit/<%= study_groups.id %>" method="POST">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name" value=<%= study_groups.name || '' %> required><br><br>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="/">📚 Study Buddy</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-                <label for="subject_id">Subject ID:</label><br>
-                <input type="number" id="subject_id" name="subject_id" value=<%= study_groups.subject_id || 0 %> required><br><br>
-
-                <label for="members">Members:</label><br>
-                <input type="text" id="members" name="members" value=<%= study_groups.members || '' %> required><br><br>
-
-                <button type="submit">Update</button>
-            </form>
-          <% } else { %>
-              <p>No groups found.</p>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/timetable">Timetable</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/subjects">Subjects</a></li>
+          <li class="nav-item"><a class="nav-link" href="/study_groups">Study Groups</a></li>
+          <li class="nav-item"><a class="nav-link" href="/exams">Exams</a></li>
+        </ul>
+        <div class="d-flex gap-2">
+          <% if (user.role === 'admin') { %>
+            <a href="/admin" class="btn btn-yellow">🛠️ Admin Dashboard</a>
           <% } %>
-          <a href ="/study_groups">Back</a>
+          <a href="/logout" class="btn btn-outline-secondary logout-btn">🔒 Logout</a>
         </div>
+      </div>
     </div>
+  </nav>
+
+  <!-- Add a new plan button -->
+  <div class="container mb-4 text-end">
+    <a href="/study_groups_add" class="btn" style="background-color:#4B2E2E; color:#F5F5DC; border:none; border-radius:8px; padding:6px 12px; font-weight:600; text-decoration:none;">
+      📄 Add a new plan
+    </a>
+  </div>
+
+  <!-- Main -->
+  <main class="container">
+    <h1 class="text-center">Study Groups</h1>
+
+    <!-- Table Header -->
+    <div class="table-header">
+      <div class="table-cell name">Group Name</div>
+      <div class="table-cell">Subject ID</div>
+      <div class="table-cell">Members</div>
+      <div class="table-cell">Date & Time</div>
+      <% if (user.role === 'admin') { %>
+      <div class="table-cell actions">Actions</div>
+      <% } %>
+    </div>
+
+    <!-- Table Rows -->
+    <% for (let i = 0; i < study_groups.length; i++) { %>
+      <div class="table-row">
+        <div class="table-cell name">
+          <a href="/study_groups_details/<%= study_groups[i].id %>"><%= study_groups[i].name %></a>
+        </div>
+        <div class="table-cell"><%= study_groups[i].subject_id %></div>
+        <div class="table-cell"><%= study_groups[i].members %></div>
+        <div class="table-cell">
+          <%= new Date(study_groups[i].created_at).toLocaleString() %>
+        </div>
+        <% if (user.role === 'admin') { %>
+        <div class="table-cell actions">
+          <a href="/study_groups_details/<%= study_groups[i].id %>" class="btn btn-sm btn-yellow">👁️ View</a>
+          <a href="/study_groups_edit/<%= study_groups[i].id %>" class="btn btn-sm btn-outline-secondary admin-btn">✏️ Edit</a>
+          <a href="/study_groups_delete/<%= study_groups[i].id %>" onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-sm btn-outline-secondary logout-btn">🗑️ Delete</a>
+        </div>
+        <% } %>
+      </div>
+    <% } %>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
