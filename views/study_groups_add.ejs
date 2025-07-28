@@ -15,34 +15,19 @@
             min-height: 100vh;
         }
         
-        .navbar {
-            background-color: #4B2E2E !important;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
-        
-        .nav-link {
-            transition: background 0.2s, text-decoration 0.2s;
-            margin-right: 0.5rem;
-            color: #F5F5DC !important;
-        }
-        
-        .nav-link:hover {
-            background-color: #5C3A3A !important;
-            color: #FFF !important;
-            text-decoration: underline;
-            border-radius: 5px;
-        }
-        
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 3rem auto;
             padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
-        .btn {
-            border-radius: 8px;
+        h2 {
+            color: #19202f;
+            margin-bottom: 30px;
+            text-align: center;
         }
         
         .form-control {
@@ -52,76 +37,44 @@
             border-color: #ced4da;
         }
         
-        .card {
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #dee2e6;
-            margin-bottom: 20px;
+        button.btn-primary {
+            background-color: #E6B614;
+            border: none;
+            color: #2C1810;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
         
-        h1, h2, h3, h4 {
-            color: #19202f;
-            margin-bottom: 30px;
-        }
-        
-        .btn-outline-secondary {
-            color: #19202f;
-            border-color: #19202f;
-        }
-        
-        .btn-outline-secondary:hover {
-            background-color: #19202f;
-            color: #ffffff;
-        }
-        
-        /* Button hover effects */
-        .admin-btn:hover {
-            background-color: #E6B614 !important;
-            color: #2C1810 !important;
-            text-decoration: none !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .logout-btn:hover {
-            background-color: #C94A4A !important;
-            color: #F5F5DC !important;
-            text-decoration: none !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .welcome-text {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            text-align: center;
+        button.btn-primary:hover {
+            background-color: #d4af0a;
+            color: #1e1208;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h2>Add New Study Group</h2>
-        <form action="/study_groups_add" method="POST">
+    <div class="container">
+        <h2>➕ Add New Study Group</h2>
+        <form action="/study_groups_add" method="POST" novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">Group Name:</label>
-                <input type="text" id="name" name="name" class="form-control" required />
+                <input type="text" id="name" name="name" class="form-control" placeholder="Enter group name" required />
             </div>
 
             <div class="mb-3">
                 <label for="subject_id" class="form-label">Subject ID:</label>
-                <input type="number" id="subject_id" name="subject_id" class="form-control" required min="1" />
+                <input type="number" id="subject_id" name="subject_id" class="form-control" placeholder="Enter subject ID" required min="1" />
             </div>
 
             <div class="mb-3">
                 <label for="members" class="form-label">Members:</label>
-                <input type="text" id="members" name="members" class="form-control" required />
+                <input type="text" id="members" name="members" class="form-control" placeholder="Enter members separated by commas" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Study Group</button>
+            <button type="submit" class="btn btn-primary">Add Study Group 📚</button>
         </form>
     </div>
 </body>
