@@ -572,19 +572,59 @@ app.post('/deleteResource/:id', checkAuthenticated, (req, res) => {
     });
 });
 
-//justin study groups go to study_groups.ejs
+// /study_groups route to display study groups
 app.get('/study_groups', checkAuthenticated, (req, res) => {
+    const search = req.query.search || ''; // Capture the search query if provided
 
-    //check all data inside study_groups
-    const sql = 'SELECT * FROM study_groups';
-    db.query(sql, (error, results) => {
+    // SQL query to filter study groups by name or subject_id
+    const sql = `
+        SELECT * FROM study_groups
+        WHERE name LIKE ? OR subject_id LIKE ?
+    `;
+    
+    db.query(sql, [`%${search}%`, `%${search}%`], (error, results) => {
         if (error) {
             console.error('Database query error:', error.message);
             return res.status(500).send('Error Retrieving study_groups');
         }
+        
+        // Render the view with the results and search query passed in
+        res.render('study_groups', {
+            user: req.session.user,
+            study_groups: results,
+            search: search,        // Pass search to the view
+            nameQuery: search      // You can use nameQuery for the form input
+        });
+    });
+});
 
-        // collect data to insert
-        res.render('study_groups', { user: req.session.user, study_groups: results });
+
+
+//justin search 
+app.get('/searchStudyGroups', checkAuthenticated, (req, res) => {
+    const { name = '', subject = '' } = req.query;
+    const nameSearch = `%${name}%`;
+    const subjectSearch = `%${subject}%`;
+
+    const sql = `
+        SELECT * FROM study_groups
+        WHERE name LIKE ? AND subject_id LIKE ?
+        ORDER BY created_at DESC
+    `;
+
+    db.query(sql, [nameSearch, subjectSearch], (err, results) => {
+        if (err) {
+            console.error('DB error (search study groups):', err);
+            return res.status(500).send('Database error');
+        }
+
+        // Render the study_groups page with search results
+        res.render('study_groups', {
+            nameQuery: name,        // Pass the search term for the input
+            subjectQuery: subject,  // Optional, for subject filtering
+            user: req.session.user,
+            study_groups: results
+        });
     });
 });
 
