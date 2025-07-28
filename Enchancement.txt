@@ -1,0 +1,13 @@
+1)bootstrap - Navigation 
+
+2)Mandatory Field input for Form
+
+3)included a route to more information when click on more
+
+4)Store information of recorded item in array and displaying it
+
+5)image store in folder and connect to webpage using express static
+
+6)
+
+ 
