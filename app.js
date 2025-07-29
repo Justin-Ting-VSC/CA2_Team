@@ -337,7 +337,23 @@ app.get('/subjects_delete/:id', checkAuthenticated, checkAdmin, (req, res) => {
                             return res.status(500).send('Error deleting subject');
                         }
 
-                        res.redirect('/subjects');
+                        // Reset AUTO_INCREMENT based on the current max ID
+                        db.query('SELECT MAX(id) AS maxId FROM subjects', (err, results) => {
+                            if (err) {
+                                console.error('Error retrieving max ID:', err.message);
+                                return res.status(500).send('Error resetting AUTO_INCREMENT');
+                            }
+
+                            const nextId = (results[0].maxId || 0) + 1;
+                            db.query('ALTER TABLE subjects AUTO_INCREMENT = ?', [nextId], (err) => {
+                                if (err) {
+                                    console.error('Error resetting AUTO_INCREMENT:', err.message);
+                                    return res.status(500).send('Failed to reset AUTO_INCREMENT');
+                                }
+
+                                res.redirect('/subjects');
+                            });
+                        });
                     });
                 });
             });
