@@ -198,6 +198,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Subject ID</th>
                                         <th>Subject Name</th>
                                         <th>Code</th>
                                         <th>Description</th>
@@ -210,6 +211,7 @@
                                 <tbody>
                                     <% subjects.forEach(subject => { %>
                                         <tr>
+                                            <td><%= subject.id %></td>
                                             <td>
                                                 <a href="/subjects/view/<%= subject.id %>" class="subject-name-link">
                                                     <%= subject.name %>
