@@ -396,9 +396,9 @@ app.get('/timetable', checkAuthenticated, (req, res) => {
 });
 
 let timetableEntries = [
-    { id: 1, subject: 'Mathematics', day: 'Monday', time_slot: '10:00 - 12:00' },
-    { id: 2, subject: 'Physics', day: 'Wednesday', time_slot: '14:00 - 16:00' },
-    { id: 3, subject: 'Chemistry', day: 'Friday', time_slot: '09:00 - 11:00' },
+    { id: 1, subject: 'Software Development Process', day: 'Monday', time_slot: '10:00 - 12:00' },
+    { id: 2, subject: 'Business Intelligence', day: 'Wednesday', time_slot: '14:00 - 16:00' },
+    { id: 3, subject: 'Software Application Development', day: 'Friday', time_slot: '09:00 - 11:00' },
 ];
 let nextId = 4; // To assign unique IDs
 
